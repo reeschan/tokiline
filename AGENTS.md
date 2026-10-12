@@ -35,6 +35,8 @@ node examples/check.mjs <name>
 
 pnpm does not update an installed example when the tarball at the same path is rebuilt, so after changing `src`, run `pnpm --dir examples/<name> update tokiline` before the install step.
 
+The architecture diagram in the README is drawn with D2 from `docs/architecture/architecture.d2` into `architecture-light.svg` and `architecture-dark.svg`. After changing the structure, update the `.d2` and redraw both SVGs (the maintainer uses a render script that swaps `__MONO__` for black and white and embeds the icons). README screenshots come from `pnpm readme:images`.
+
 ## Rules
 
 - No runtime JavaScript in 0.1. The Reveal animation is CSS only.

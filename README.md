@@ -20,6 +20,15 @@ English | [日本語](README.ja.md)
 - Collapse by container query: the Alternate layout folds by the Timeline's own width, not the screen's.
 - Right-to-left languages are supported. Sides are logical (`start` and `end`), so they flip by themselves.
 
+## Architecture
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/architecture/architecture-dark.svg" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/architecture/architecture-light.svg" alt="Architecture of tokiline. In the GitHub repository, the CSS and HTML contract, the TypeScript helpers and the React components are built with tsdown and Lightning CSS. GitHub Actions runs CI on every push, publishes the package to npm, and deploys the demo site. Your app (plain HTML, Next.js, Tailwind CSS v4, or Vue, Svelte and Astro) installs it, and the browser renders the Timeline with no runtime JavaScript." width="720" />
+</picture>
+
+The diagram's source is [`docs/architecture/architecture.d2`](docs/architecture/architecture.d2).
+
 ## Install
 
 ```sh

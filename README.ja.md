@@ -20,6 +20,15 @@
 - コンテナクエリでの Collapse。Alternate の折りたたみは、画面ではなくタイムライン自身の幅で決まります。
 - 右から左に書く言語に対応。左右は論理方向 (`start` と `end`) なので、自動で反転します。
 
+## Architecture
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/architecture/architecture-dark.svg" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/architecture/architecture-light.svg" alt="tokiline の構成図。GitHub のリポジトリで、CSS と HTML の決まり・TypeScript のヘルパ・React の部品を tsdown と Lightning CSS でビルドする。GitHub Actions が push のたびに CI を回し、npm に公開し、デモのサイトを公開する。利用する側のアプリ (素の HTML・Next.js・Tailwind CSS v4・Vue や Svelte や Astro) がそれを入れ、ブラウザは実行時の JavaScript なしでタイムラインを描く。" width="720" />
+</picture>
+
+図の元は [`docs/architecture/architecture.d2`](docs/architecture/architecture.d2) です。
+
 ## Install
 
 ```sh

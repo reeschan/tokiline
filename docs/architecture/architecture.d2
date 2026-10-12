@@ -1,0 +1,122 @@
+# tokiline のアーキテクチャ図
+# __MONO__ は単色ロゴの色。render.py がライト用 (000000) とダーク用 (ffffff) に置き換えて 2 枚描く
+# 生成: python ~/.claude/skills/arch-diagram/versions/v1.1/scripts/render.py docs/architecture/architecture.d2
+direction: down
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    pad: 40
+  }
+}
+
+classes: {
+  svc: {
+    shape: rectangle
+    style: {
+      border-radius: 12
+      font-size: 15
+    }
+  }
+  ext: {
+    shape: image
+    width: 64
+    height: 64
+    label.near: outside-bottom-center
+  }
+  zone: {
+    style.border-radius: 16
+  }
+}
+
+repo: GitHub repository {
+  class: zone
+  icon: https://cdn.simpleicons.org/github/__MONO__
+
+  css: "CSS and HTML contract\nsource of truth, @layer tokiline" {
+    class: svc
+    icon: https://cdn.simpleicons.org/css/__MONO__
+  }
+
+  ts: "TypeScript helpers\nclasses and data-* attributes" {
+    class: svc
+    icon: https://cdn.simpleicons.org/typescript
+  }
+
+  react: "React components\nServer Components, optional" {
+    class: svc
+    icon: https://cdn.simpleicons.org/react
+  }
+
+  build: "Build\ntsdown and Lightning CSS" {
+    class: svc
+    icon: https://cdn.simpleicons.org/rolldown
+  }
+}
+
+actions: GitHub Actions {
+  class: zone
+  icon: https://cdn.simpleicons.org/githubactions
+  direction: down
+
+  ci: "CI\nVitest, Playwright, Next.js examples" {
+    class: svc
+    icon: https://cdn.simpleicons.org/vitest
+  }
+
+  release: "Release\nChangesets, provenance" {
+    class: svc
+    icon: https://icons.terrastruct.com/essentials%2F096-upload.svg
+  }
+
+  pages: "Pages\nVite demo site" {
+    class: svc
+    icon: https://cdn.simpleicons.org/vite
+  }
+}
+
+npm: npm registry {
+  class: ext
+  icon: https://cdn.simpleicons.org/npm
+}
+
+app: Your app {
+  class: zone
+  icon: https://icons.terrastruct.com/tech%2Flaptop.svg
+  direction: down
+
+  html: "Plain HTML\nclasses and style.css" {
+    class: svc
+    icon: https://cdn.simpleicons.org/html5
+  }
+
+  next: "Next.js\nApp Router and Pages Router" {
+    class: svc
+    icon: https://cdn.simpleicons.org/nextdotjs/__MONO__
+  }
+
+  tailwind: "Tailwind CSS v4\nlayer(components)" {
+    class: svc
+    icon: https://cdn.simpleicons.org/tailwindcss
+  }
+
+  vue: "Vue, Svelte, Astro\nTypeScript helpers" {
+    class: svc
+    icon: https://cdn.simpleicons.org/vuedotjs
+  }
+}
+
+browser: "Browser\nno runtime JavaScript" {
+  class: ext
+  icon: https://icons.terrastruct.com/tech%2Fbrowser-2.svg
+}
+
+repo.css -> repo.build
+repo.ts -> repo.build
+repo.react -> repo.build
+repo.build -> actions.release: dist
+repo -> actions.ci: every push {style.stroke-dash: 4}
+actions.release -> npm: publish
+npm -> app: npm install tokiline
+app -> browser: HTML and style.css
+actions.pages -> browser: demo {style.stroke-dash: 4}
