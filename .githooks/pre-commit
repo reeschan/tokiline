@@ -1,0 +1,2 @@
+#!/bin/sh
+exec sh scripts/commit-gate.sh verify

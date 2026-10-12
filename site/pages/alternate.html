@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alternate · tokiline</title>
+    <link rel="stylesheet" href="../shared/page.css" />
+  </head>
+  <body style="min-inline-size: 74rem">
+    <main>
+      <h1>Alternate and Collapse</h1>
+      <section class="fixture" style="inline-size: 60rem">
+        <h2>wide</h2>
+        <ol class="toki-timeline" data-testid="wide">
+          <li class="toki-item" data-testid="wide-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="wide-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="wide-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 3</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="wide-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 4</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 60rem">
+        <h2>explicit</h2>
+        <ol class="toki-timeline" data-testid="explicit">
+          <li class="toki-item" data-testid="explicit-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="explicit-2" data-side="start">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="explicit-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 3</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="explicit-4" data-side="end">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 4</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="explicit-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 5</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>md-narrow</h2>
+        <ol class="toki-timeline" data-testid="md-narrow">
+          <li class="toki-item" data-testid="md-narrow-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="md-narrow-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 60rem">
+        <h2>alt-attr</h2>
+        <ol class="toki-timeline" data-side="alternate" data-testid="alt-attr">
+          <li class="toki-item" data-testid="alt-attr-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="alt-attr-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 36rem">
+        <h2>sm-wide</h2>
+        <ol class="toki-timeline" data-collapse="sm" data-testid="sm-wide">
+          <li class="toki-item" data-testid="sm-wide-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="sm-wide-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 30rem">
+        <h2>sm-narrow</h2>
+        <ol class="toki-timeline" data-collapse="sm" data-testid="sm-narrow">
+          <li class="toki-item" data-testid="sm-narrow-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="sm-narrow-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 60rem">
+        <h2>lg-narrow</h2>
+        <ol class="toki-timeline" data-collapse="lg" data-testid="lg-narrow">
+          <li class="toki-item" data-testid="lg-narrow-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="lg-narrow-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 70rem">
+        <h2>lg-wide</h2>
+        <ol class="toki-timeline" data-collapse="lg" data-testid="lg-wide">
+          <li class="toki-item" data-testid="lg-wide-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="lg-wide-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 25rem">
+        <h2>never</h2>
+        <ol class="toki-timeline" data-collapse="never" data-testid="never">
+          <li class="toki-item" data-testid="never-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="never-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 70rem">
+        <h2>always</h2>
+        <ol class="toki-timeline" data-collapse="always" data-testid="always">
+          <li class="toki-item" data-testid="always-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="always-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 60rem" dir="rtl">
+        <h2>rtl</h2>
+        <ol class="toki-timeline" data-testid="rtl">
+          <li class="toki-item" data-testid="rtl-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="rtl-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 60rem">
+        <h2>side-end</h2>
+        <ol class="toki-timeline" data-side="end" data-testid="side-end">
+          <li class="toki-item" data-testid="side-end-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="side-end-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 60rem">
+        <h2>md-attr</h2>
+        <ol class="toki-timeline" data-collapse="md" data-testid="md-attr">
+          <li class="toki-item" data-testid="md-attr-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="md-attr-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>md-attr-narrow</h2>
+        <ol class="toki-timeline" data-collapse="md" data-testid="md-attr-narrow">
+          <li class="toki-item" data-testid="md-attr-narrow-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 1</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="md-attr-narrow-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">Jan 2026</time></div>
+            <div class="toki-card">
+              <h3>Milestone 2</h3>
+              <p>The team reviews progress and prepares the next step.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

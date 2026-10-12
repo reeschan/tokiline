@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+site/dist/
+examples/**/.next/
+examples/**/next-env.d.ts
+examples/.pack/
+examples/*/pnpm-lock.yaml
+*.tgz
+*.log
+.DS_Store

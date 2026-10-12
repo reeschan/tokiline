@@ -1,0 +1,63 @@
+@import "tailwindcss" source("./");
+@import "@fontsource-variable/noto-sans-jp";
+/* The setup the README recommends: tokiline's layer goes inside Tailwind's components layer, so it beats Tailwind's base and loses to its utilities. */
+@import "../../dist/style.css" layer(components);
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* The shadcn/ui theme variables, close to its neutral palette. */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --border: oklch(0.922 0 0);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --border: oklch(1 0 0 / 10%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+}
+
+/* Map the shadcn/ui variables onto tokiline's custom properties (the same block the README shows). */
+.toki-timeline {
+  --toki-line-color: var(--border);
+  --toki-line-width: 1px;
+  --toki-marker-size: 2rem;
+  --toki-marker-bg: var(--primary);
+  --toki-marker-fg: var(--primary-foreground);
+  --toki-marker-ring-width: 4px;
+  --toki-marker-ring-color: var(--card);
+  --toki-card-bg: var(--card);
+  --toki-arrow-size: 0;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Noto Sans JP Variable", sans-serif;
+}

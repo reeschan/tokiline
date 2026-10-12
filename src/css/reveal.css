@@ -1,0 +1,49 @@
+/* Unsupported browsers and reduced motion keep the ordinary, fully visible layout. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .toki-timeline[data-reveal="scroll"] > .toki-item {
+      --_toki-reveal-direction: 1;
+
+      &:dir(rtl) {
+        --_toki-reveal-direction: -1;
+      }
+
+      > .toki-marker {
+        animation: toki-reveal-marker linear both;
+        /* The shorthand resets animation-timeline, so the timeline must come after it. */
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+
+      > :is(.toki-card, .toki-meta) {
+        animation: toki-reveal-slide linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+
+    @keyframes toki-reveal-marker {
+      from {
+        scale: 0.5;
+        opacity: 0;
+      }
+
+      to {
+        scale: 1;
+        opacity: 1;
+      }
+    }
+
+    @keyframes toki-reveal-slide {
+      from {
+        translate: calc(2rem * var(--_toki-side-sign) * var(--_toki-reveal-direction)) 0;
+        opacity: 0;
+      }
+
+      to {
+        translate: 0 0;
+        opacity: 1;
+      }
+    }
+  }
+}

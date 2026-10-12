@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sides · tokiline</title>
+    <link rel="stylesheet" href="../shared/page.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Sides</h1>
+      <p>Timelines with every Card on one Side of the Line: start, end, right to left, and the custom properties that style a Segment.</p>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Side end</h2>
+        <ol class="toki-timeline" data-side="end" data-testid="end">
+          <li class="toki-item" data-testid="end-1">
+            <div class="toki-marker">
+              <svg data-testid="end-1-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="end-2">
+            <div class="toki-marker">
+              <svg data-testid="end-2-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4 20 12 12 20 4 12Z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="end-3">
+            <div class="toki-marker"></div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Side start</h2>
+        <ol class="toki-timeline" data-side="start" data-testid="start">
+          <li class="toki-item" data-testid="start-1">
+            <div class="toki-marker">
+              <svg data-testid="start-1-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="start-2">
+            <div class="toki-marker">
+              <svg data-testid="start-2-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4 20 12 12 20 4 12Z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="start-3">
+            <div class="toki-marker"></div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" dir="rtl" style="inline-size: 40rem">
+        <h2>Side end, right to left</h2>
+        <ol class="toki-timeline" data-side="end" data-testid="rtl">
+          <li class="toki-item" data-testid="rtl-1">
+            <div class="toki-marker">
+              <svg data-testid="rtl-1-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="rtl-2">
+            <div class="toki-marker">
+              <svg data-testid="rtl-2-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4 20 12 12 20 4 12Z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="rtl-3">
+            <div class="toki-marker"></div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 30rem">
+        <h2>No data-side</h2>
+        <ol class="toki-timeline" data-testid="default">
+          <li class="toki-item" data-testid="default-1">
+            <div class="toki-marker">
+              <svg data-testid="default-1-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="default-2">
+            <div class="toki-marker">
+              <svg data-testid="default-2-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4 20 12 12 20 4 12Z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Side start, with an Item that asks for end</h2>
+        <ol class="toki-timeline" data-side="start" data-testid="mixed">
+          <li class="toki-item" data-side="end" data-testid="mixed-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>This Item asks for the end Side, which a one-sided Timeline ignores.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="mixed-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Custom properties on Items</h2>
+        <ol class="toki-timeline" data-side="end" data-testid="vars">
+          <li class="toki-item" data-testid="vars-1" style="--toki-line-style: dashed; --toki-line-color: rgb(255, 0, 0)">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Dashed Segment</h3>
+              <p>This Item draws its Segment as a red dashed line.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="vars-2" style="--toki-marker-size: 0; --toki-arrow-size: 0">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>No Marker, no Arrow</h3>
+              <p>This Item hides its Marker and the Arrow of its Card.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="vars-3">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Defaults</h3>
+              <p>This Item sets no custom properties.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem; --toki-line-color: rgb(0, 128, 0)">
+        <h2>Custom property on an ancestor</h2>
+        <ol class="toki-timeline" data-side="end" data-testid="ancestor">
+          <li class="toki-item" data-testid="ancestor-1">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Green Line</h3>
+              <p>The section around this Timeline sets the color of the Line.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="ancestor-2">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Still green</h3>
+              <p>Every Item inherits the color from the section.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

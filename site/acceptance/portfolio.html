@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acceptance · tokiline</title>
+    <link rel="stylesheet" href="./portfolio.css" />
+  </head>
+  <body>
+    <main class="mx-auto max-w-2xl px-6 py-10">
+      <h1 class="mb-8 text-3xl font-bold">経歴</h1>
+      <ol class="toki-timeline" data-side="end" data-testid="career">
+        <li class="toki-item" data-testid="career-1">
+          <div class="toki-marker">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="7" width="18" height="13" rx="2" />
+              <path d="M9 7V4h6v3" />
+            </svg>
+          </div>
+          <div class="toki-meta flex items-center gap-2 text-sm text-muted-foreground">
+            <time datetime="2025-03">2025年03月 - 現在</time>
+            <span class="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">継続中</span>
+          </div>
+          <div
+            class="toki-card rounded-lg border border-border/40 border-t-4 border-t-primary bg-card p-5 shadow-md"
+            data-testid="career-1-card"
+          >
+            <h2 class="text-lg font-semibold">フリーランス</h2>
+            <p class="text-sm text-muted-foreground">個人事業主</p>
+            <p class="mt-3 text-sm">
+              業務システムの開発や保守を、複数の現場で担当している。要件の整理から実装、運用の改善までを一人で受け持つ。
+            </p>
+            <ul class="mt-3 flex flex-wrap gap-2" aria-label="参画先">
+              <li class="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">サンプル社 A</li>
+              <li class="rounded-full bg-secondary px-3 py-1 text-xs text-secondary-foreground">サンプル社 B</li>
+            </ul>
+            <button type="button" class="mt-4 rounded-md border border-border px-3 py-1.5 text-sm font-medium">参画案件の詳細</button>
+          </div>
+        </li>
+        <li class="toki-item" data-testid="career-2">
+          <div class="toki-marker">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="7" width="18" height="13" rx="2" />
+              <path d="M9 7V4h6v3" />
+            </svg>
+          </div>
+          <div class="toki-meta flex items-center gap-2 text-sm text-muted-foreground">
+            <time datetime="2022-04">2022年04月 - 2024年12月</time>
+          </div>
+          <div
+            class="toki-card rounded-lg border border-border/40 border-t-4 border-t-primary bg-card p-5 shadow-md"
+            data-testid="career-2-card"
+          >
+            <h2 class="text-lg font-semibold">株式会社サンプル</h2>
+            <p class="text-sm text-muted-foreground">正社員</p>
+            <p class="mt-3 text-sm">
+              自社サービスの開発チームで、画面の実装と API の設計を担当した。後半はチームのレビューの進め方も整えた。
+            </p>
+          </div>
+        </li>
+        <li class="toki-item" data-testid="career-3">
+          <div class="toki-marker">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="7" width="18" height="13" rx="2" />
+              <path d="M9 7V4h6v3" />
+            </svg>
+          </div>
+          <div class="toki-meta flex items-center gap-2 text-sm text-muted-foreground">
+            <time datetime="2018-08">2018年08月 - 2022年03月</time>
+          </div>
+          <div
+            class="toki-card rounded-lg border border-border/40 border-t-4 border-t-primary bg-card p-5 shadow-md"
+            data-testid="career-3-card"
+          >
+            <h2 class="text-lg font-semibold">サンプル株式会社</h2>
+            <p class="text-sm text-muted-foreground">正社員</p>
+            <p class="mt-3 text-sm">受託開発の部署で、小さな案件から順に任された。設計から納品まで一通りの流れを経験した。</p>
+          </div>
+        </li>
+      </ol>
+      <span data-testid="primary-probe" class="text-primary" hidden></span>
+      <span data-testid="border-probe" class="text-border" hidden></span>
+    </main>
+  </body>
+</html>

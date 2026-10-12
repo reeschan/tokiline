@@ -1,0 +1,165 @@
+/*
+ * The parts of an Item: the Segment of the Line, the Marker, the Meta, and the Card with its Arrow.
+ *
+ * An Item is a grid of two columns: the Marker column, as wide as the Marker, and the content column. Every value that
+ * depends on the Side of the Item's Card is a private --_toki-* custom property of the Item. The Side rules below only
+ * set those properties and the part rules only read them, so Alternate (alternate.css) and Reveal (reveal.css) build on
+ * the same properties instead of changing the part rules.
+ */
+
+/*
+ * Side end. A Timeline with data-side="alternate" or without data-side gets it too: that is how Alternate looks when it
+ * Collapses. An Item's own data-side does not count here; it only takes effect in Alternate.
+ */
+.toki-item {
+  --_toki-columns: var(--toki-marker-size, 2.5rem) minmax(0, 1fr);
+  --_toki-areas: "marker meta" ". card";
+  --_toki-areas-bare: "marker card";
+  --_toki-line-center: calc(var(--toki-marker-size, 2.5rem) / 2);
+  --_toki-line-inset-end: auto;
+  --_toki-side-sign: 1;
+  --_toki-arrow-inset-start: auto;
+  --_toki-arrow-inset-end: 100%;
+  --_toki-arrow-border-start: 0;
+  --_toki-arrow-border-end: var(--toki-arrow-size, 0.5rem);
+}
+
+/* Side start, for every Item whatever its own data-side: on a one-sided Timeline, an Item on the other Side would break the Line. */
+.toki-timeline[data-side="start"] > .toki-item {
+  --_toki-columns: minmax(0, 1fr) var(--toki-marker-size, 2.5rem);
+  --_toki-areas: "meta marker" "card .";
+  --_toki-areas-bare: "card marker";
+  --_toki-line-center: calc(100% - var(--toki-marker-size, 2.5rem) / 2);
+  --_toki-line-inset-end: 0;
+  --_toki-side-sign: -1;
+  --_toki-arrow-inset-start: 100%;
+  --_toki-arrow-inset-end: auto;
+  --_toki-arrow-border-start: var(--toki-arrow-size, 0.5rem);
+  --_toki-arrow-border-end: 0;
+}
+
+/*
+ * Item. With a Meta it has two rows, the Marker and the Meta, then the Card. Without one, the Card sits beside the
+ * Marker. The padding at the end is the gap to the next Item, so the Segment runs across it.
+ */
+.toki-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--_toki-columns);
+  grid-template-areas: var(--_toki-areas-bare);
+  gap: 0.5rem var(--toki-gutter, 1rem);
+  align-items: start;
+  padding-block-end: var(--toki-gap, 2rem);
+}
+
+.toki-item:has(> .toki-meta) {
+  grid-template-areas: var(--_toki-areas);
+}
+
+.toki-item:last-child {
+  padding-block-end: 0;
+}
+
+/*
+ * Segment: the Item's part of the Line, from the top of the Item to its bottom, centered on the Marker.
+ *
+ * A unitless 0 is a number, not a length, inside calc(), so --toki-marker-size: 0 makes the inline-start inset invalid
+ * and leaves it auto, at the inline-start edge of the Item. --_toki-line-inset-end is 0 when the Line runs next to the
+ * inline-end edge, so the line falls back to that edge instead. Only the inline-start border shows, so the wider box
+ * this makes otherwise changes nothing.
+ */
+.toki-item::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(var(--_toki-line-center) - var(--toki-line-width, 2px) / 2);
+  inset-inline-end: var(--_toki-line-inset-end);
+  border-inline-start: var(--toki-line-width, 2px) var(--toki-line-style, solid)
+    var(--toki-line-color, color-mix(in oklab, currentColor 25%, transparent));
+}
+
+/*
+ * Marker. It is positioned, like the Segment, and comes after it, so it paints over the Line. Its ring never gets wider
+ * than the Marker itself, so a Marker size of 0 hides the ring too.
+ */
+.toki-marker {
+  grid-area: marker;
+  place-self: start center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--toki-marker-size, 2.5rem);
+  block-size: var(--toki-marker-size, 2.5rem);
+  border-radius: 50%;
+  background-color: var(--toki-marker-bg, var(--toki-accent, currentColor));
+  box-shadow: 0 0 0 clamp(0px, var(--toki-marker-size, 2.5rem), var(--toki-marker-ring-width, 0.25rem))
+    var(--toki-marker-ring-color, Canvas);
+  -webkit-text-fill-color: var(--toki-marker-fg, Canvas);
+}
+
+/*
+ * The Marker keeps the color it inherits, so currentColor in its default background is the text color around the
+ * Timeline. Its content takes the foreground color instead.
+ *
+ * Plain text written straight into the Marker has no element to color, so the Marker sets the fill of its text instead:
+ * -webkit-text-fill-color changes only the fill, not color, and it is inherited. The Marker, a flex container, centers
+ * that text across and along.
+ */
+.toki-marker > * {
+  color: var(--toki-marker-fg, Canvas);
+}
+
+.toki-marker > :is(svg, img) {
+  inline-size: 50%;
+  block-size: 50%;
+}
+
+/* Meta: in the first row, centered on the Marker. */
+.toki-meta {
+  grid-area: meta;
+  align-self: center;
+  min-inline-size: 0;
+  color: var(--toki-meta-fg, color-mix(in oklab, currentColor 70%, transparent));
+}
+
+/* Card: it stays inside the content column, however long its content. */
+.toki-card {
+  grid-area: card;
+  position: relative;
+  min-inline-size: 0;
+  padding: var(--toki-card-padding, 1rem);
+  border: var(--toki-card-border, 1px solid color-mix(in oklab, currentColor 15%, transparent));
+  border-radius: var(--toki-card-radius, 0.5rem);
+  background-color: var(--toki-card-bg, color-mix(in oklab, currentColor 6%, Canvas));
+  color: var(--toki-card-fg, currentColor);
+  box-shadow: var(--toki-card-shadow, 0 1px 2px color-mix(in oklab, currentColor 12%, transparent));
+}
+
+/* The padding is all the space inside the Card's edge: the outer margins of its first and last child do not add to it. */
+.toki-card > :first-child {
+  margin-block-start: 0;
+}
+
+.toki-card > :last-child {
+  margin-block-end: 0;
+}
+
+/*
+ * Arrow: a triangle of borders just outside the Card's edge on the Line's side. Only the inline border next to the Card
+ * has a width, so only it shows, in the Card's background color; the transparent block borders cut it into a triangle
+ * that points at the Line. Its center is level with the Marker's when the Card starts at the top of the Item.
+ */
+.toki-card::before {
+  content: "";
+  position: absolute;
+  inset-block-start: max(0px, var(--toki-marker-size, 2.5rem) / 2 - var(--toki-arrow-size, 0.5rem));
+  inset-inline-start: var(--_toki-arrow-inset-start);
+  inset-inline-end: var(--_toki-arrow-inset-end);
+  border-style: solid;
+  border-block-color: transparent;
+  border-inline-color: var(--toki-card-bg, color-mix(in oklab, currentColor 6%, Canvas));
+  border-block-width: var(--toki-arrow-size, 0.5rem);
+  border-inline-start-width: var(--_toki-arrow-border-start);
+  border-inline-end-width: var(--_toki-arrow-border-end);
+}

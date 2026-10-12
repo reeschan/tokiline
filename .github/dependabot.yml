@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule: { interval: weekly, day: monday, timezone: Asia/Tokyo }
+    open-pull-requests-limit: 5
+    commit-message: { prefix: "chore(deps)" }
+    groups:
+      minor-and-patch: { update-types: [minor, patch] }
+    ignore:
+      # typescript-eslint 8.71 は TypeScript <6.1 までしか対応していない (AGENTS.md を参照)
+      - dependency-name: typescript
+        versions: [">=6.1.0"]
+  # React 18 での動作確認用。18 系に留める
+  - package-ecosystem: npm
+    directory: /test/react18
+    schedule: { interval: weekly, day: monday, timezone: Asia/Tokyo }
+    commit-message: { prefix: "chore(deps)" }
+    groups:
+      react18: { patterns: ["*"] }
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: github-actions
+    directories: [/, /.github/actions/setup]
+    schedule: { interval: weekly, day: monday, timezone: Asia/Tokyo }
+    commit-message: { prefix: "ci(deps)" }
+    groups:
+      actions: { patterns: ["*"] }

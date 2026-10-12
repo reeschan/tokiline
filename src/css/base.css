@@ -1,0 +1,37 @@
+/*
+ * The Timeline, and how the --toki-* custom properties get their default values.
+ *
+ * tokiline never declares a --toki-* property. Every rule reads the ones it uses as var(--toki-name, default), so a value
+ * set on any ancestor (such as :root), on the Timeline, or on one Item reaches the parts that use it, and an unset one
+ * falls back to its default. The defaults use no fixed colors, only currentColor and the system color Canvas, so they
+ * follow the page's text color and color-scheme in light and dark alike:
+ *
+ *   --toki-accent             currentColor
+ *   --toki-gap                2rem
+ *   --toki-gutter             1rem
+ *   --toki-line-color         color-mix(in oklab, currentColor 25%, transparent)
+ *   --toki-line-width         2px
+ *   --toki-line-style         solid
+ *   --toki-marker-size        2.5rem
+ *   --toki-marker-bg          var(--toki-accent, currentColor)
+ *   --toki-marker-fg          Canvas
+ *   --toki-marker-ring-width  0.25rem
+ *   --toki-marker-ring-color  Canvas
+ *   --toki-card-bg            color-mix(in oklab, currentColor 6%, Canvas)
+ *   --toki-card-fg            currentColor
+ *   --toki-card-border        1px solid color-mix(in oklab, currentColor 15%, transparent)
+ *   --toki-card-radius        0.5rem
+ *   --toki-card-padding       1rem
+ *   --toki-card-shadow        0 1px 2px color-mix(in oklab, currentColor 12%, transparent)
+ *   --toki-arrow-size         0.5rem
+ *   --toki-meta-fg            color-mix(in oklab, currentColor 70%, transparent)
+ */
+
+/* A plain list: no list markers or spacing of its own. It is a container named toki, so Alternate can Collapse by the
+   Timeline's own inline size. */
+.toki-timeline {
+  container: toki / inline-size;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

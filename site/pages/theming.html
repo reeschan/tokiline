@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Theming · tokiline</title>
+    <link rel="stylesheet" href="../shared/page.css" />
+  </head>
+  <body style="min-inline-size: 74rem">
+    <main>
+      <h1>Theming</h1>
+      <p>
+        Timelines that change how tokiline looks: a dark surface, custom properties, Segment line styles, bare Cards, and right to left.
+      </p>
+
+      <section class="fixture" data-testid="dark" style="color-scheme: dark; background: #111827; color: #f3f4f6; inline-size: 40rem">
+        <h2>Dark</h2>
+        <ol class="toki-timeline" data-side="end">
+          <li class="toki-item" data-testid="dark-1">
+            <div class="toki-marker">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="dark-2">
+            <div class="toki-marker">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 4 20 12 12 20 4 12Z" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="dark-3">
+            <div class="toki-marker">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="5" y="5" width="14" height="14" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" data-testid="custom" style="inline-size: 40rem">
+        <h2>Custom properties</h2>
+        <ol
+          class="toki-timeline"
+          data-side="end"
+          style="
+            --toki-accent: #6d28d9;
+            --toki-card-bg: #faf5ff;
+            --toki-card-border: 1px solid #ddd6fe;
+            --toki-line-color: #a78bfa;
+            --toki-card-radius: 1rem;
+          "
+        >
+          <li class="toki-item" data-testid="custom-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="custom-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="custom-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" data-testid="segments" style="inline-size: 40rem">
+        <h2>Segment line styles</h2>
+        <ol class="toki-timeline" data-side="end">
+          <li class="toki-item" data-testid="segments-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="segments-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="segments-3" style="--toki-line-style: dashed">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="segments-4" style="--toki-line-style: dotted">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2027-01">January 2027</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>The team looks back and plans the next release.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" data-testid="bare" style="inline-size: 40rem">
+        <h2>Bare Cards</h2>
+        <ol class="toki-timeline" data-side="end" style="--toki-marker-size: 0; --toki-arrow-size: 0; --toki-line-width: 0">
+          <li class="toki-item" data-testid="bare-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="bare-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="bare-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+      <section class="fixture" data-testid="rtl-alternate" dir="rtl" style="inline-size: 60rem">
+        <h2>Alternate, right to left</h2>
+        <ol class="toki-timeline">
+          <li class="toki-item" data-testid="rtl-alternate-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="rtl-alternate-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="rtl-alternate-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-testid="rtl-alternate-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2027-01">January 2027</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>The team looks back and plans the next release.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "tokiline-example-next-16",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tokiline": "file:../.pack/tokiline.tgz"
+  }
+}

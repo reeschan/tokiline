@@ -1,0 +1,11 @@
+dist
+coverage
+playwright-report
+test-results
+site/dist
+examples/**/.next
+examples/**/node_modules
+test/react18/node_modules
+pnpm-lock.yaml
+**/pnpm-lock.yaml
+docs/pbi

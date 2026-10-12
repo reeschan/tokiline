@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Showcase · tokiline</title>
+    <link rel="stylesheet" href="../shared/page.css" />
+    <style>
+      /*
+       * The light look is shared/page.css as it is. Only the dark look is added here.
+       * Vite puts the linked stylesheet after this one in the built page, so :root:root (not :root) makes this rule win.
+       */
+      @media (prefers-color-scheme: dark) {
+        :root:root {
+          color-scheme: dark;
+          background-color: #0b1120;
+          color: #e5e7eb;
+        }
+      }
+
+      /* The shots are 56rem wide. The padding keeps the Marker ring and the Card shadow inside the picture. */
+      [data-shot] {
+        box-sizing: content-box;
+        inline-size: 56rem;
+        margin-block: 0 2rem;
+        padding: 1.5rem;
+      }
+
+      [data-shot="theming"] {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 3rem;
+      }
+
+      [data-shot="theming"] h2 {
+        margin-block-end: 1rem;
+        font-size: 1rem;
+      }
+
+      /* The 4th step is not done yet, so its Card is faded. */
+      .is-pending .toki-card {
+        opacity: 0.55;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-shot="hero">
+        <ol class="toki-timeline">
+          <li class="toki-item">
+            <div class="toki-marker">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M6 21V3" />
+                <path d="M6 4h12l-3 4 3 4H6" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item">
+            <div class="toki-marker">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 20 5 16 16 5l3 3L8 19Z" />
+                <path d="M14 7l3 3" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Design review</h3>
+              <p>Everyone looks over the first sketches and picks a direction.</p>
+            </div>
+          </li>
+          <li class="toki-item">
+            <div class="toki-marker">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 3c3 2 4 6 4 9l-4 4-4-4c0-3 1-7 4-9Z" />
+                <circle cx="12" cy="10" r="1.5" />
+                <path d="M8 14l-3 3v3l3-2" />
+                <path d="M16 14l3 3v3l-3-2" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Public beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item">
+            <div class="toki-marker">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8Z" />
+              </svg>
+            </div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Version 1.0</h3>
+              <p>The first stable version ships to everyone.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section data-shot="theming">
+        <div>
+          <h2>Custom colors</h2>
+          <ol
+            class="toki-timeline"
+            data-side="end"
+            style="
+              --toki-accent: #7c3aed;
+              --toki-line-color: #a78bfa;
+              --toki-card-bg: color-mix(in oklab, #7c3aed 10%, Canvas);
+              --toki-card-border: 1px solid color-mix(in oklab, #7c3aed 30%, transparent);
+              --toki-card-radius: 1rem;
+            "
+          >
+            <li class="toki-item">
+              <div class="toki-marker"></div>
+              <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+              <div class="toki-card">
+                <h3>Kickoff</h3>
+                <p>The team agrees on the goals.</p>
+              </div>
+            </li>
+            <li class="toki-item">
+              <div class="toki-marker"></div>
+              <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+              <div class="toki-card">
+                <h3>Design review</h3>
+                <p>Everyone picks a direction.</p>
+              </div>
+            </li>
+            <li class="toki-item">
+              <div class="toki-marker"></div>
+              <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+              <div class="toki-card">
+                <h3>Public beta</h3>
+                <p>Early users send feedback.</p>
+              </div>
+            </li>
+            <li class="toki-item">
+              <div class="toki-marker"></div>
+              <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+              <div class="toki-card">
+                <h3>Version 1.0</h3>
+                <p>The first stable version ships.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div>
+          <h2>Steps and progress</h2>
+          <ol class="toki-timeline" data-side="end">
+            <li class="toki-item">
+              <div class="toki-marker">1</div>
+              <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+              <div class="toki-card">
+                <h3>Kickoff</h3>
+                <p>The team agrees on the goals.</p>
+              </div>
+            </li>
+            <li class="toki-item">
+              <div class="toki-marker">2</div>
+              <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+              <div class="toki-card">
+                <h3>Design review</h3>
+                <p>Everyone picks a direction.</p>
+              </div>
+            </li>
+            <li class="toki-item" style="--toki-line-style: dashed">
+              <div class="toki-marker">3</div>
+              <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+              <div class="toki-card">
+                <h3>Public beta</h3>
+                <p>Early users send feedback.</p>
+              </div>
+            </li>
+            <li class="toki-item is-pending" style="--toki-line-style: dotted">
+              <div class="toki-marker">4</div>
+              <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+              <div class="toki-card">
+                <h3>Version 1.0</h3>
+                <p>The first stable version ships.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

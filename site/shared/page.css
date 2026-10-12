@@ -1,0 +1,50 @@
+@import "@fontsource-variable/inter";
+@import "../../dist/style.css";
+
+/*
+ * Every page of the site loads this file. Above, the font and the built tokiline CSS (the same dist/style.css users get).
+ * Below, only the page around the timelines. Nothing here targets the tokiline parts or sets their custom properties,
+ * so each page shows tokiline exactly as it ships.
+ */
+
+:root {
+  color-scheme: light;
+  font-family: "Inter Variable", system-ui, sans-serif;
+  line-height: 1.5;
+  color: #111827;
+  background-color: #ffffff;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+}
+
+h1,
+h2,
+h3 {
+  margin-block: 0 0.5em;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+/*
+ * A test fixture. Each page sets its inline-size in a style attribute. The box stays content-box, so that size is
+ * the width of the Timeline inside (which the Collapse container queries read), and the padding keeps the Marker
+ * ring and the Card shadow inside a screenshot of the fixture.
+ */
+.fixture {
+  margin-block: 0 2rem;
+  padding: 1rem;
+}

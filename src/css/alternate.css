@@ -1,0 +1,88 @@
+/*
+ * A whitespace toggle enables the Alternate values; initial makes them invalid so var() uses the Collapsed values.
+ * Reset it on each Item to keep a nested Timeline from inheriting its parent's expanded state. The four conditions
+ * below only enable the toggle; the layout and Side values are defined once here.
+ */
+.toki-item {
+  --_toki-alternate: initial;
+}
+
+.toki-timeline:is(:not([data-side]), [data-side="alternate"]) > .toki-item {
+  --_toki-alt-columns: var(--_toki-alternate) minmax(0, 1fr) var(--toki-marker-size, 2.5rem) minmax(0, 1fr);
+  --_toki-alt-areas: var(--_toki-alternate) var(--_toki-alt-side-areas);
+  --_toki-alt-areas-bare: var(--_toki-alternate) var(--_toki-alt-side-areas-bare);
+  --_toki-alt-line-center: var(--_toki-alternate) 50%;
+  --_toki-alt-sign: var(--_toki-alternate) var(--_toki-alt-side-sign);
+  --_toki-alt-inset-start: var(--_toki-alternate) var(--_toki-alt-side-inset-start);
+  --_toki-alt-inset-end: var(--_toki-alternate) var(--_toki-alt-side-inset-end);
+  --_toki-alt-border-start: var(--_toki-alternate) var(--_toki-alt-side-border-start);
+  --_toki-alt-border-end: var(--_toki-alternate) var(--_toki-alt-side-border-end);
+  --_toki-alt-meta-align: var(--_toki-alternate) start;
+  --_toki-alt-meta-text: var(--_toki-alternate) var(--_toki-alt-side-meta-text);
+
+  --_toki-columns: var(--_toki-alt-columns, var(--toki-marker-size, 2.5rem) minmax(0, 1fr));
+  --_toki-areas: var(--_toki-alt-areas, "marker meta" ". card");
+  --_toki-areas-bare: var(--_toki-alt-areas-bare, "marker card");
+  --_toki-line-center: var(--_toki-alt-line-center, calc(var(--toki-marker-size, 2.5rem) / 2));
+  --_toki-side-sign: var(--_toki-alt-sign, 1);
+  --_toki-arrow-inset-start: var(--_toki-alt-inset-start, auto);
+  --_toki-arrow-inset-end: var(--_toki-alt-inset-end, 100%);
+  --_toki-arrow-border-start: var(--_toki-alt-border-start, 0);
+  --_toki-arrow-border-end: var(--_toki-alt-border-end, var(--toki-arrow-size, 0.5rem));
+
+  &:is([data-side="start"], :nth-child(odd of :not([data-side]))) {
+    --_toki-alt-side-areas: "card marker meta";
+    --_toki-alt-side-areas-bare: "card marker .";
+    --_toki-alt-side-sign: -1;
+    --_toki-alt-side-inset-start: 100%;
+    --_toki-alt-side-inset-end: auto;
+    --_toki-alt-side-border-start: var(--toki-arrow-size, 0.5rem);
+    --_toki-alt-side-border-end: 0;
+    --_toki-alt-side-meta-text: start;
+  }
+
+  &:is([data-side="end"], :nth-child(even of :not([data-side]))) {
+    --_toki-alt-side-areas: "meta marker card";
+    --_toki-alt-side-areas-bare: ". marker card";
+    --_toki-alt-side-sign: 1;
+    --_toki-alt-side-inset-start: auto;
+    --_toki-alt-side-inset-end: 100%;
+    --_toki-alt-side-border-start: 0;
+    --_toki-alt-side-border-end: var(--toki-arrow-size, 0.5rem);
+    --_toki-alt-side-meta-text: end;
+  }
+
+  /*
+   * A tall Card determines the row's height in Alternate. Align Meta to the Marker instead of that whole row.
+   * Resolve lh on Meta itself, so its own font determines the offset of a single line.
+   */
+  > .toki-meta {
+    --_toki-alt-meta-offset: var(--_toki-alternate) max(0px, (var(--toki-marker-size, 2.5rem) - 1lh) / 2);
+
+    align-self: var(--_toki-alt-meta-align, center);
+    margin-block-start: var(--_toki-alt-meta-offset, 0px);
+    text-align: var(--_toki-alt-meta-text, start);
+  }
+}
+
+@container toki (inline-size >= 48rem) {
+  .toki-timeline:is(:not([data-side]), [data-side="alternate"]):is(:not([data-collapse]), [data-collapse="md"]) > .toki-item {
+    --_toki-alternate: ;
+  }
+}
+
+@container toki (inline-size >= 32rem) {
+  .toki-timeline:is(:not([data-side]), [data-side="alternate"])[data-collapse="sm"] > .toki-item {
+    --_toki-alternate: ;
+  }
+}
+
+@container toki (inline-size >= 64rem) {
+  .toki-timeline:is(:not([data-side]), [data-side="alternate"])[data-collapse="lg"] > .toki-item {
+    --_toki-alternate: ;
+  }
+}
+
+.toki-timeline:is(:not([data-side]), [data-side="alternate"])[data-collapse="never"] > .toki-item {
+  --_toki-alternate: ;
+}

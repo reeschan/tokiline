@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tokiline</title>
+    <link rel="stylesheet" href="./shared/page.css" />
+  </head>
+  <body>
+    <main>
+      <h1>tokiline</h1>
+      <p>
+        tokiline is a framework-agnostic timeline UI. Write an ordered list with its class names and load one CSS file: each Item gets a
+        Marker on the Line, a Meta for the date, and a Card for the content, with no JavaScript in the browser.
+      </p>
+      <h2>Pages</h2>
+      <ul>
+        <li><a href="./pages/sides.html">Sides</a></li>
+        <li><a href="./pages/alternate.html">Alternate and Collapse</a></li>
+        <li><a href="./pages/reveal.html">Reveal</a></li>
+        <li><a href="./pages/theming.html">Theming</a></li>
+        <li><a href="./acceptance/portfolio.html">Portfolio</a></li>
+      </ul>
+      <h2>Example</h2>
+      <ol class="toki-timeline">
+        <li class="toki-item">
+          <div class="toki-marker"></div>
+          <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+          <div class="toki-card">
+            <h3>Kickoff</h3>
+            <p>The team agrees on the goals and the first milestones.</p>
+          </div>
+        </li>
+        <li class="toki-item">
+          <div class="toki-marker"></div>
+          <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+          <div class="toki-card">
+            <h3>Beta</h3>
+            <p>Early users try the beta and send their feedback.</p>
+          </div>
+        </li>
+        <li class="toki-item">
+          <div class="toki-marker"></div>
+          <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+          <div class="toki-card">
+            <h3>Launch</h3>
+            <p>The first stable version ships.</p>
+          </div>
+        </li>
+      </ol>
+    </main>
+  </body>
+</html>
