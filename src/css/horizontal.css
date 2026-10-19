@@ -1,0 +1,213 @@
+/*
+ * Horizontal Orientation. The Line runs inline, so the Timeline itself scrolls inline and each Item is one column of a
+ * three-row grid: the block-start row holds the parts above the Line, the middle row the Marker and the Segment, and
+ * the block-end row the parts below it.
+ *
+ * The three rows are a subgrid shared by every Item, so the Line stays straight even when the Cards above or below it
+ * have different heights. Side start puts the Card in the first row and the Meta in the third; Side end does the
+ * opposite, and Alternate swaps the two per Item.
+ *
+ * A container query cannot style its own container, so the Timeline's grid and its inline scroll are always on while it
+ * has data-orientation="horizontal". Narrow Timelines instead fall back through the Items: every value that only makes
+ * sense while the Timeline is wide enough is a private --_toki-h-* custom property that starts out invalid, and the
+ * @container rules near the end turn it into an empty value. The rules below then use the fallbacks, which are the
+ * vertical values, and stack the Items in a single column of the same grid. The block axis has nothing to scroll: the
+ * three rows hold the parts, and their content is always as tall as the rows.
+ */
+
+.toki-timeline[data-orientation="horizontal"] {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--toki-item-size, 16rem);
+  grid-template-rows: auto auto auto;
+  /* There is no logical form of column-gap; the Line runs on the inline axis in a horizontal writing mode. */
+  column-gap: var(--toki-gap, 2rem);
+  /*
+   * Both axes scroll: overflow-inline and overflow-block are not Baseline widely available yet, and the block axis has
+   * nothing to scroll to. The padding keeps the first Marker's ring and the Card shadows inside the scroll container's
+   * padding box, where they are not clipped and do not turn into block overflow.
+   */
+  overflow: auto;
+  padding-block: var(--toki-marker-ring-width, 0.25rem);
+  padding-inline: var(--toki-marker-ring-width, 0.25rem);
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: var(--toki-marker-ring-width, 0.25rem);
+}
+
+/*
+ * The Item. The private values with no suffix are the Side end values; the start rule below changes them. The values
+ * ending in -value are read only by the gated properties below, so Alternate can change a Side with one value.
+ */
+.toki-timeline[data-orientation="horizontal"] > .toki-item {
+  --_toki-h-expanded: initial;
+
+  --_toki-h-card-row: 3;
+  --_toki-h-meta-row: 1;
+  --_toki-h-card-align-value: start;
+  --_toki-h-meta-align-value: end;
+  --_toki-h-card-margin-block-start-value: var(--toki-gutter, 1rem);
+  --_toki-h-card-margin-block-end-value: 0px;
+  --_toki-h-meta-margin-block-start-value: 0px;
+  --_toki-h-meta-margin-block-end-value: var(--toki-gutter, 1rem);
+  --_toki-h-arrow-block-start-value: auto;
+  --_toki-h-arrow-block-end-value: 100%;
+  --_toki-h-arrow-border-block-start-value: 0;
+  --_toki-h-arrow-border-block-end-value: var(--toki-arrow-size, 0.5rem);
+
+  /* Each var() turns the whole custom property invalid while --_toki-h-expanded is initial. */
+  --_toki-h-columns: var(--_toki-h-expanded) minmax(0, 1fr);
+  --_toki-h-rows: var(--_toki-h-expanded) subgrid;
+  --_toki-h-areas: var(--_toki-h-expanded) none;
+  --_toki-h-gap: var(--_toki-h-expanded) 0;
+  --_toki-h-item-row: var(--_toki-h-expanded) 1 / -1;
+  --_toki-h-item-column: var(--_toki-h-expanded) auto;
+  --_toki-h-item-inline-size: var(--_toki-h-expanded) auto;
+  --_toki-h-item-padding-end: var(--_toki-h-expanded) 0;
+  --_toki-h-marker-area: var(--_toki-h-expanded) 2 / 1;
+  --_toki-h-marker-align: var(--_toki-h-expanded) center;
+  --_toki-h-marker-justify: var(--_toki-h-expanded) start;
+  --_toki-h-card-area: var(--_toki-h-expanded) var(--_toki-h-card-row) / 1;
+  --_toki-h-meta-area: var(--_toki-h-expanded) var(--_toki-h-meta-row) / 1;
+  --_toki-h-card-align: var(--_toki-h-expanded) var(--_toki-h-card-align-value);
+  --_toki-h-meta-align: var(--_toki-h-expanded) var(--_toki-h-meta-align-value);
+  --_toki-h-card-margin-block-start: var(--_toki-h-expanded) var(--_toki-h-card-margin-block-start-value);
+  --_toki-h-card-margin-block-end: var(--_toki-h-expanded) var(--_toki-h-card-margin-block-end-value);
+  --_toki-h-meta-margin-block-start: var(--_toki-h-expanded) var(--_toki-h-meta-margin-block-start-value);
+  --_toki-h-meta-margin-block-end: var(--_toki-h-expanded) var(--_toki-h-meta-margin-block-end-value);
+  --_toki-h-segment-position: var(--_toki-h-expanded) static;
+  --_toki-h-segment-area: var(--_toki-h-expanded) 2 / 1;
+  --_toki-h-segment-align: var(--_toki-h-expanded) center;
+  --_toki-h-segment-block-size: var(--_toki-h-expanded) 0;
+  --_toki-h-segment-margin-end: var(--_toki-h-expanded) calc(-1 * var(--toki-gap, 2rem));
+  --_toki-h-segment-inline-start-width: var(--_toki-h-expanded) 0;
+  --_toki-h-segment-block-start-width: var(--_toki-h-expanded) var(--toki-line-width, 2px);
+  --_toki-h-segment-block-start-style: var(--_toki-h-expanded) var(--toki-line-style, solid);
+  --_toki-h-segment-block-start-color: var(--_toki-h-expanded) var(--toki-line-color, color-mix(in oklab, currentColor 25%, transparent));
+  --_toki-h-arrow-inline-start: var(--_toki-h-expanded) max(0px, var(--toki-marker-size, 2.5rem) / 2 - var(--toki-arrow-size, 0.5rem));
+  --_toki-h-arrow-inline-end: var(--_toki-h-expanded) auto;
+  --_toki-h-arrow-block-color: var(--_toki-h-expanded) var(--toki-card-bg, color-mix(in oklab, currentColor 6%, Canvas));
+  --_toki-h-arrow-inline-color: var(--_toki-h-expanded) transparent;
+  --_toki-h-arrow-border-inline-start: var(--_toki-h-expanded) var(--toki-arrow-size, 0.5rem);
+  --_toki-h-arrow-border-inline-end: var(--_toki-h-expanded) var(--toki-arrow-size, 0.5rem);
+  --_toki-h-arrow-block-start: var(--_toki-h-expanded) var(--_toki-h-arrow-block-start-value);
+  --_toki-h-arrow-block-end: var(--_toki-h-expanded) var(--_toki-h-arrow-block-end-value);
+  --_toki-h-arrow-border-block-start: var(--_toki-h-expanded) var(--_toki-h-arrow-border-block-start-value);
+  --_toki-h-arrow-border-block-end: var(--_toki-h-expanded) var(--_toki-h-arrow-border-block-end-value);
+}
+
+/* Side start, on a one-sided Timeline and on the Items of an Alternate one. A one-sided Timeline ignores an Item's data-side. */
+.toki-timeline[data-orientation="horizontal"][data-side="start"] > .toki-item,
+.toki-timeline[data-orientation="horizontal"]:is(:not([data-side]), [data-side="alternate"])
+  > .toki-item:is([data-side="start"], :nth-child(odd of :not([data-side]))) {
+  --_toki-h-card-row: 1;
+  --_toki-h-meta-row: 3;
+  --_toki-h-card-align-value: end;
+  --_toki-h-meta-align-value: start;
+  --_toki-h-card-margin-block-start-value: 0px;
+  --_toki-h-card-margin-block-end-value: var(--toki-gutter, 1rem);
+  --_toki-h-meta-margin-block-start-value: var(--toki-gutter, 1rem);
+  --_toki-h-meta-margin-block-end-value: 0px;
+  --_toki-h-arrow-block-start-value: 100%;
+  --_toki-h-arrow-block-end-value: auto;
+  --_toki-h-arrow-border-block-start-value: var(--toki-arrow-size, 0.5rem);
+  --_toki-h-arrow-border-block-end-value: 0;
+}
+
+/* The Item's own grid. The fallbacks keep the vertical layout while the Timeline is narrow. */
+.toki-timeline[data-orientation="horizontal"] > .toki-item {
+  grid-template-columns: var(--_toki-h-columns, var(--_toki-columns));
+  grid-template-rows: var(--_toki-h-rows, none);
+  grid-template-areas: var(--_toki-h-areas, var(--_toki-areas-bare));
+  gap: var(--_toki-h-gap, 0.5rem var(--toki-gutter, 1rem));
+  grid-row: var(--_toki-h-item-row, auto);
+  /* One column, so the Items of a narrow Timeline stack in it instead of running across. */
+  grid-column: var(--_toki-h-item-column, 1);
+  inline-size: var(--_toki-h-item-inline-size, 100cqi);
+  padding-block-end: var(--_toki-h-item-padding-end, var(--toki-gap, 2rem));
+  scroll-snap-align: start;
+}
+
+.toki-timeline[data-orientation="horizontal"] > .toki-item:has(> .toki-meta) {
+  grid-template-areas: var(--_toki-h-areas, var(--_toki-areas));
+}
+
+.toki-timeline[data-orientation="horizontal"] > .toki-item:last-child {
+  --_toki-h-segment-margin-end: var(--_toki-h-expanded) 0;
+  padding-block-end: var(--_toki-h-item-padding-end, 0);
+}
+
+.toki-timeline[data-orientation="horizontal"] > .toki-item > .toki-marker {
+  grid-area: var(--_toki-h-marker-area, marker);
+  align-self: var(--_toki-h-marker-align, start);
+  justify-self: var(--_toki-h-marker-justify, center);
+}
+
+.toki-timeline[data-orientation="horizontal"] > .toki-item > .toki-meta {
+  grid-area: var(--_toki-h-meta-area, meta);
+  align-self: var(--_toki-h-meta-align, center);
+  margin-block-start: var(--_toki-h-meta-margin-block-start, 0px);
+  margin-block-end: var(--_toki-h-meta-margin-block-end, 0px);
+}
+
+.toki-timeline[data-orientation="horizontal"] > .toki-item > .toki-card {
+  grid-area: var(--_toki-h-card-area, card);
+  align-self: var(--_toki-h-card-align, auto);
+  margin-block-start: var(--_toki-h-card-margin-block-start, 0px);
+  margin-block-end: var(--_toki-h-card-margin-block-end, 0px);
+}
+
+/*
+ * Segment: a zero-height grid item in the Marker's row, centered on the Marker, whose block-start border is the Line.
+ * A negative inline-end margin crosses the gap to the next Item; the last Item keeps its Segment at its own width.
+ */
+.toki-timeline[data-orientation="horizontal"] > .toki-item::before {
+  position: var(--_toki-h-segment-position, absolute);
+  grid-area: var(--_toki-h-segment-area, auto);
+  align-self: var(--_toki-h-segment-align, auto);
+  justify-self: stretch;
+  block-size: var(--_toki-h-segment-block-size, auto);
+  margin-inline-end: var(--_toki-h-segment-margin-end, 0);
+  border-inline-start-width: var(--_toki-h-segment-inline-start-width, var(--toki-line-width, 2px));
+  border-block-start-width: var(--_toki-h-segment-block-start-width, 0);
+  border-block-start-style: var(--_toki-h-segment-block-start-style, none);
+  border-block-start-color: var(--_toki-h-segment-block-start-color, currentColor);
+}
+
+/*
+ * Arrow: a triangle on the Card's edge next to the Line, centered on the Marker across the Item. A Card below the Line
+ * points up with a block-end border, and a Card above it points down with a block-start border.
+ */
+.toki-timeline[data-orientation="horizontal"] > .toki-item > .toki-card::before {
+  inset-block-start: var(--_toki-h-arrow-block-start, max(0px, var(--toki-marker-size, 2.5rem) / 2 - var(--toki-arrow-size, 0.5rem)));
+  inset-block-end: var(--_toki-h-arrow-block-end, auto);
+  inset-inline-start: var(--_toki-h-arrow-inline-start, var(--_toki-arrow-inset-start));
+  inset-inline-end: var(--_toki-h-arrow-inline-end, var(--_toki-arrow-inset-end));
+  border-block-color: var(--_toki-h-arrow-block-color, transparent);
+  border-inline-color: var(--_toki-h-arrow-inline-color, var(--toki-card-bg, color-mix(in oklab, currentColor 6%, Canvas)));
+  border-block-start-width: var(--_toki-h-arrow-border-block-start, var(--toki-arrow-size, 0.5rem));
+  border-block-end-width: var(--_toki-h-arrow-border-block-end, var(--toki-arrow-size, 0.5rem));
+  border-inline-start-width: var(--_toki-h-arrow-border-inline-start, var(--_toki-arrow-border-start));
+  border-inline-end-width: var(--_toki-h-arrow-border-inline-end, var(--_toki-arrow-border-end));
+}
+
+@container toki (inline-size >= 48rem) {
+  .toki-timeline[data-orientation="horizontal"]:is(:not([data-collapse]), [data-collapse="md"]) > .toki-item {
+    --_toki-h-expanded: ;
+  }
+}
+
+@container toki (inline-size >= 32rem) {
+  .toki-timeline[data-orientation="horizontal"][data-collapse="sm"] > .toki-item {
+    --_toki-h-expanded: ;
+  }
+}
+
+@container toki (inline-size >= 64rem) {
+  .toki-timeline[data-orientation="horizontal"][data-collapse="lg"] > .toki-item {
+    --_toki-h-expanded: ;
+  }
+}
+
+.toki-timeline[data-orientation="horizontal"][data-collapse="never"] > .toki-item {
+  --_toki-h-expanded: ;
+}

@@ -1,17 +1,22 @@
-import { readdirSync, readFileSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
 
-// The rules for the CSS sources in src/css (AGENTS.md): every rule sits in @layer tokiline, nothing uses !important,
-// and only logical properties are used. Each check takes CSS text and returns what it found, so the same function runs
-// on the real files and on short examples that show it catches violations. Every check removes comments first.
+// The rules for the CSS sources in src/css and src/presets (AGENTS.md): every rule sits in @layer tokiline, nothing
+// uses !important, only logical properties are used, and each preset is a single @layer tokiline.preset block. Each
+// check takes CSS text and returns what it found, so the same function runs on the real files and on short examples
+// that show it catches violations. Every check removes comments first.
 
 const entry = "tokiline.css"
 const cssDir = new URL("../src/css/", import.meta.url)
+const presetsDir = new URL("../src/presets/", import.meta.url)
 
-/** Reads every .css file in src/css, keyed by file name. */
-function readSources(): Record<string, string> {
-  const names = readdirSync(cssDir).filter((name) => name.endsWith(".css"))
-  return Object.fromEntries(names.map((name) => [name, readFileSync(new URL(name, cssDir), "utf8")]))
+/** Reads every .css file in dir, keyed by file name. A directory that does not exist reads as none. */
+function readCssDir(dir: URL): Record<string, string> {
+  if (!existsSync(dir)) return {}
+  const names = readdirSync(dir)
+    .filter((name) => name.endsWith(".css"))
+    .sort()
+  return Object.fromEntries(names.map((name) => [name, readFileSync(new URL(name, dir), "utf8")]))
 }
 
 /** Replaces each comment with a space, so nothing inside a comment counts. */
@@ -86,11 +91,42 @@ function findPhysicalContainerQueries(css: string): string[] {
     .map((prelude) => `@container ${prelude}`)
 }
 
-const sources = readSources()
+/** The index of the "}" that closes the "{" at start, skipping braces inside strings; -1 if it is not closed. */
+function findClosingBrace(css: string, start: number): number {
+  let depth = 0
+  let quote = ""
+  for (let index = start; index < css.length; index += 1) {
+    const char = css[index]
+    if (quote) {
+      if (char === "\\") index += 1
+      else if (char === quote) quote = ""
+    } else if (char === '"' || char === "'") quote = char
+    else if (char === "{") depth += 1
+    else if (char === "}") {
+      depth -= 1
+      if (depth === 0) return index
+    }
+  }
+  return -1
+}
 
-/** Runs a check on every file in src/css and prefixes each finding with the file name. */
-function checkEveryFile(check: (css: string) => string[]): string[] {
-  return Object.entries(sources).flatMap(([name, css]) => check(css).map((found) => `${name}: ${found}`))
+/** Check 5: the whole file is one @layer tokiline.preset block, with nothing before or after it. */
+function findPresetLayerProblems(css: string): string[] {
+  const text = stripComments(css).trim()
+  const open = /^@layer\s+tokiline\.preset\s*\{/i.exec(text)
+  if (!open) return ["not a single @layer tokiline.preset block"]
+  const close = findClosingBrace(text, open[0].length - 1)
+  if (close < 0) return ["the @layer tokiline.preset block is not closed"]
+  if (text.slice(close + 1).trim() !== "") return ["content after the @layer tokiline.preset block"]
+  return []
+}
+
+const sources = readCssDir(cssDir)
+const presetSources = readCssDir(presetsDir)
+
+/** Runs a check on every file in a source directory and prefixes each finding with the file name. */
+function checkEveryFile(files: Readonly<Record<string, string>>, check: (css: string) => string[]): string[] {
+  return Object.entries(files).flatMap(([name, css]) => check(css).map((found) => `${name}: ${found}`))
 }
 
 describe("1. the entry imports every other file exactly once into layer(tokiline), and no other file imports", () => {
@@ -145,7 +181,11 @@ describe("1. the entry imports every other file exactly once into layer(tokiline
 
 describe("2. no file uses !important", () => {
   it("holds for src/css", () => {
-    expect(checkEveryFile(findImportant)).toEqual([])
+    expect(checkEveryFile(sources, findImportant)).toEqual([])
+  })
+
+  it("holds for src/presets", () => {
+    expect(checkEveryFile(presetSources, findImportant)).toEqual([])
   })
 
   it("catches !important, with or without spaces and in any case", () => {
@@ -168,7 +208,11 @@ describe("3. no file declares a physical property", () => {
     .split(/\s+/)
 
   it("holds for src/css", () => {
-    expect(checkEveryFile(findPhysicalProperties)).toEqual([])
+    expect(checkEveryFile(sources, findPhysicalProperties)).toEqual([])
+  })
+
+  it("holds for src/presets", () => {
+    expect(checkEveryFile(presetSources, findPhysicalProperties)).toEqual([])
   })
 
   it("catches every physical property", () => {
@@ -203,7 +247,7 @@ describe("3. no file declares a physical property", () => {
 
 describe("4. no @container condition uses width or height", () => {
   it("holds for src/css", () => {
-    expect(checkEveryFile(findPhysicalContainerQueries)).toEqual([])
+    expect(checkEveryFile(sources, findPhysicalContainerQueries)).toEqual([])
   })
 
   it("catches width and height, with or without min- and max-", () => {
@@ -225,5 +269,58 @@ describe("4. no @container condition uses width or height", () => {
 
   it("ignores comments", () => {
     expect(findPhysicalContainerQueries("/* @container (width > 1px) {} */\n@container toki (inline-size > 1px) {}")).toEqual([])
+  })
+})
+
+describe("5. each preset is one @layer tokiline.preset block", () => {
+  it("holds for src/presets", () => {
+    expect(checkEveryFile(presetSources, findPresetLayerProblems)).toEqual([])
+  })
+
+  it("accepts one layer block with comments, nested rules and braces in strings", () => {
+    const css = `/* a preset */
+      @layer tokiline.preset {
+        .toki-timeline[data-preset="quiet"] { --toki-accent: oklch(60% 0.18 250); }
+        @media (prefers-reduced-motion: no-preference) {
+          .toki-item { animation: fade 1s }
+        }
+        .toki-timeline[data-preset="quiet"] .toki-card::before { content: "}" }
+      }`
+    expect(findPresetLayerProblems(css)).toEqual([])
+  })
+
+  it.each([
+    {
+      name: "an empty file",
+      css: "/* only a comment */",
+      expected: ["not a single @layer tokiline.preset block"],
+    },
+    {
+      name: "a rule after the layer",
+      css: "@layer tokiline.preset { .a { color: red } }\n.b { color: blue }",
+      expected: ["content after the @layer tokiline.preset block"],
+    },
+    {
+      name: "a rule before the layer",
+      css: ".a { color: red }\n@layer tokiline.preset { .b { color: blue } }",
+      expected: ["not a single @layer tokiline.preset block"],
+    },
+    {
+      name: "another layer name",
+      css: "@layer tokiline { .a { color: red } }",
+      expected: ["not a single @layer tokiline.preset block"],
+    },
+    {
+      name: "an unclosed block",
+      css: "@layer tokiline.preset { .a { color: red }",
+      expected: ["the @layer tokiline.preset block is not closed"],
+    },
+    {
+      name: "two layer blocks",
+      css: "@layer tokiline.preset { .a { color: red } }\n@layer tokiline.preset { .b { color: blue } }",
+      expected: ["content after the @layer tokiline.preset block"],
+    },
+  ])("catches $name", ({ css, expected }) => {
+    expect(findPresetLayerProblems(css)).toEqual(expected)
   })
 })

@@ -1,0 +1,228 @@
+/*
+ * kawa (a river): a quiet celadon-to-water-blue Preset for roadmaps and changelogs.
+ *
+ * The Line shows how far a plan has come. A done Item's Segment is a solid accent line; an upcoming one is a dashed
+ * line whose pattern drifts toward the block-end (vertical) or inline-end (horizontal). Where scroll-driven animations
+ * are supported, each done Segment grows from its start as it is read, and a browser without them (or a reader who
+ * asked for less motion) sees the whole accent line from the start.
+ *
+ * Every color comes from one accent hue, mixed with currentColor and Canvas, so light and dark pages work without a
+ * fixed palette. Nothing here changes the layout: it sets --toki-* values, adds motion, paints the two free
+ * pseudo-elements of an Item, and lifts the Marker above the dash layer. No --_toki-* private property is written.
+ *
+ * A Flow draws its Lane Lines through an Item's ::before and paints a Join's bend with its ::after, so the scroll-driven
+ * fill, the moving dashes and the transparent upcoming Segment are left out on a Timeline with data-flow. The colors,
+ * and the solid accent Segment of a done Item, still apply there.
+ */
+
+@layer tokiline.preset {
+  .toki-timeline[data-preset="kawa"] {
+    --toki-accent: oklch(58% 0.1 205);
+    --toki-line-color: color-mix(in oklab, var(--toki-accent) 35%, transparent);
+    --toki-card-bg: color-mix(in oklab, var(--toki-accent) 7%, Canvas);
+    --toki-card-border: 1px solid color-mix(in oklab, var(--toki-accent) 30%, Canvas);
+    --toki-meta-fg: color-mix(in oklab, var(--toki-accent) 55%, currentColor);
+
+    --_kawa-dash-color: color-mix(in oklab, var(--toki-accent) 70%, transparent);
+    --_kawa-dash-length: 6px;
+    --_kawa-dash-period: 12px;
+    --_kawa-flow-sign: 1;
+    --_kawa-inline-origin: 0;
+  }
+
+  /* A horizontal right-to-left Timeline runs from the other side; its moving parts follow the inline axis. */
+  .toki-timeline[data-preset="kawa"]:dir(rtl) {
+    --_kawa-flow-sign: -1;
+    --_kawa-inline-origin: 100%;
+  }
+
+  /*
+   * The values that depend on the Orientation and on a horizontal Timeline being wide enough to stay horizontal are
+   * private to the Preset and gated the same way as horizontal.css: --_kawa-expanded starts as the guaranteed-invalid
+   * value, so the var() fallbacks are the vertical values, and the container queries at the end make it an empty
+   * value, which turns the horizontal values on.
+   */
+  .toki-timeline[data-preset="kawa"] > .toki-item {
+    --_kawa-expanded: initial;
+
+    --_kawa-grow-name: var(--_kawa-expanded) toki-kawa-grow-inline;
+    --_kawa-grow-origin: var(--_kawa-expanded) var(--_kawa-inline-origin) 50%;
+    --_kawa-view-axis: var(--_kawa-expanded) inline;
+    --_kawa-dash-name: var(--_kawa-expanded) toki-kawa-dash-inline;
+    --_kawa-dash-direction: var(--_kawa-expanded) to right;
+    --_kawa-dash-position: var(--_kawa-expanded) static;
+    --_kawa-dash-grid-area: var(--_kawa-expanded) 2 / 1;
+    --_kawa-dash-align-self: var(--_kawa-expanded) center;
+    --_kawa-dash-justify-self: var(--_kawa-expanded) stretch;
+    --_kawa-dash-block-size: var(--_kawa-expanded) var(--toki-line-width, 2px);
+    --_kawa-dash-inline-size: var(--_kawa-expanded) auto;
+    --_kawa-dash-inset-block: var(--_kawa-expanded) auto;
+    --_kawa-dash-inset-inline-start: var(--_kawa-expanded) auto;
+    --_kawa-dash-margin-inline-start: var(--_kawa-expanded) calc(-1 * var(--_kawa-dash-period));
+    --_kawa-dash-margin-inline-end: var(--_kawa-expanded) calc(-1 * (var(--toki-gap, 2rem) + var(--_kawa-dash-period)));
+  }
+
+  /* A done Item is a filled, solid accent line: the part of the plan that is behind. */
+  .toki-timeline[data-preset="kawa"] > .toki-item[data-status="done"] {
+    --toki-line-color: var(--toki-accent);
+    --toki-line-width: 3px;
+    --toki-line-style: solid;
+  }
+
+  /* The Item is the subject of the view timeline; its ::before scales with the Item's progress. A Flow draws its own
+     Line through the Item's ::before, so the scroll-driven fill stays out of it. */
+  .toki-timeline[data-preset="kawa"]:not([data-flow]) > .toki-item[data-status="done"] {
+    view-timeline-name: --kawa-done;
+    view-timeline-axis: var(--_kawa-view-axis, block);
+  }
+
+  .toki-timeline[data-preset="kawa"]:not([data-flow]) > .toki-item[data-status="done"]::before {
+    transform-origin: var(--_kawa-grow-origin, 50% 0);
+  }
+
+  /* The moving dash layer is the Item's last child, so lift the Marker to keep it on top of the Line. */
+  .toki-timeline[data-preset="kawa"] > .toki-item > .toki-marker {
+    z-index: 1;
+  }
+
+  /*
+   * An upcoming Item's Segment is replaced by a dashed layer, so the dashes themselves can move. The Segment keeps
+   * its place but paints nothing; the layer lies exactly over it. The layer is a period longer at each end, so moving
+   * it by one period never uncovers either end of the Segment. The gradient's direction follows the Orientation, and
+   * the animation translates it toward the block-end or inline-end by one period, then repeats.
+   */
+  .toki-timeline[data-preset="kawa"]:not([data-flow]) > .toki-item[data-status="upcoming"] {
+    --toki-line-color: transparent;
+  }
+
+  .toki-timeline[data-preset="kawa"]:not([data-flow]) > .toki-item[data-status="upcoming"]::after {
+    content: "";
+    position: var(--_kawa-dash-position, absolute);
+    grid-area: var(--_kawa-dash-grid-area, auto);
+    align-self: var(--_kawa-dash-align-self, auto);
+    justify-self: var(--_kawa-dash-justify-self, auto);
+    inset-block: var(--_kawa-dash-inset-block, calc(-1 * var(--_kawa-dash-period)));
+    inset-inline-start: var(--_kawa-dash-inset-inline-start, calc(var(--_toki-line-center) - var(--toki-line-width, 2px) / 2));
+    block-size: var(--_kawa-dash-block-size, auto);
+    inline-size: var(--_kawa-dash-inline-size, var(--toki-line-width, 2px));
+    margin-inline-start: var(--_kawa-dash-margin-inline-start, 0);
+    margin-inline-end: var(--_kawa-dash-margin-inline-end, 0);
+    color: var(--_kawa-dash-color);
+    background-image: repeating-linear-gradient(
+      var(--_kawa-dash-direction, to bottom),
+      currentColor 0 var(--_kawa-dash-length),
+      transparent var(--_kawa-dash-length) var(--_kawa-dash-period)
+    );
+    pointer-events: none;
+  }
+
+  /* The moving parts run only when the reader has not asked for reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .toki-timeline[data-preset="kawa"]:not([data-flow]) > .toki-item[data-status="upcoming"]::after {
+      animation: var(--_kawa-dash-name, toki-kawa-dash-block) 2.4s linear infinite;
+    }
+  }
+
+  /*
+   * Enhancement: where scroll-driven animations exist, a done Segment grows along its own axis as the Item is read.
+   * Without support the animation name and timeline never apply and the Segment stays full; reduced motion removes
+   * them too. The animation starts hidden only while the enhancement is active, never in the static look.
+   */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .toki-timeline[data-preset="kawa"]:not([data-flow]) > .toki-item[data-status="done"]::before {
+        animation-name: var(--_kawa-grow-name, toki-kawa-grow-block);
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --kawa-done;
+        animation-range: cover 0% cover 100%;
+      }
+    }
+  }
+
+  @keyframes toki-kawa-dash-block {
+    from {
+      translate: 0 calc(-1 * var(--_kawa-dash-period));
+    }
+
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @keyframes toki-kawa-dash-inline {
+    from {
+      translate: calc(-1 * var(--_kawa-dash-period) * var(--_kawa-flow-sign)) 0;
+    }
+
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @keyframes toki-kawa-grow-block {
+    from {
+      scale: 1 0;
+    }
+
+    to {
+      scale: 1 1;
+    }
+  }
+
+  @keyframes toki-kawa-grow-inline {
+    from {
+      scale: 0 1;
+    }
+
+    to {
+      scale: 1 1;
+    }
+  }
+
+  /*
+   * While a horizontal Timeline is wide enough to stay horizontal, the dash layer becomes a grid item in the Marker's
+   * row, like the Segment it replaces. The container queries mirror horizontal.css so a Collapsed Timeline keeps the
+   * vertical values above.
+   */
+  @container toki (inline-size >= 48rem) {
+    .toki-timeline[data-orientation="horizontal"]:is(:not([data-collapse]), [data-collapse="md"])[data-preset="kawa"] > .toki-item {
+      --_kawa-expanded: ;
+    }
+  }
+
+  @container toki (inline-size >= 32rem) {
+    .toki-timeline[data-orientation="horizontal"][data-collapse="sm"][data-preset="kawa"] > .toki-item {
+      --_kawa-expanded: ;
+    }
+  }
+
+  @container toki (inline-size >= 64rem) {
+    .toki-timeline[data-orientation="horizontal"][data-collapse="lg"][data-preset="kawa"] > .toki-item {
+      --_kawa-expanded: ;
+    }
+  }
+
+  .toki-timeline[data-orientation="horizontal"][data-collapse="never"][data-preset="kawa"] > .toki-item {
+    --_kawa-expanded: ;
+  }
+
+  .toki-timeline[data-orientation="horizontal"][data-preset="kawa"]:not([data-flow])
+    > .toki-item[data-status="upcoming"]:last-child::after {
+    margin-inline-end: 0;
+  }
+
+  /*
+   * Nothing follows the last upcoming Item to paint over the end of its dash layer, so the layer has to stop at the
+   * Segment's block-end. It is still a period longer at the start, where it needs the room to move, but its end is
+   * pulled back to the Item's block-end, where the Segment ends too: the move runs from a period before the end to
+   * the end, so it never paints past it. A horizontal Timeline that is wide enough to stay horizontal lays the layer
+   * out as a static grid item, where the block inset does not apply and the rule above already ends it at the
+   * Segment; a vertical Layout, including a Collapsed horizontal Timeline, uses this one. Nothing is clipped, so the
+   * Card's shadow and focus ring stay whole.
+   */
+  .toki-timeline[data-preset="kawa"]:not([data-flow]) > .toki-item[data-status="upcoming"]:last-child::after {
+    inset-block-end: 0;
+  }
+}

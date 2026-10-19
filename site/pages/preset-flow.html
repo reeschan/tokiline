@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Preset in a Flow · tokiline</title>
+    <link rel="stylesheet" href="../shared/page.css" />
+    <link rel="stylesheet" href="../../dist/presets/hotaru.css" />
+    <link rel="stylesheet" href="../../dist/presets/kawa.css" />
+    <link rel="stylesheet" href="../../dist/presets/kinen.css" />
+  </head>
+  <body style="min-inline-size: 64rem">
+    <main>
+      <h1>Preset in a Flow</h1>
+      <p>
+        A Flow draws the Lane Lines and the Fork and Join bends through the same pseudo-elements that the Presets use for their motion. Each
+        fixture below is the same Flow, with the same six Items on two Lanes, once with no Preset and once with each Preset. The first
+        fixture keeps the default look; the others must keep the Flow's Lines and bends whole. The attributes are the output of
+        <code>flowAttributes()</code>, written by hand as a plain HTML author would.
+      </p>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>No Preset</h2>
+        <ol class="toki-timeline" data-flow="2" data-testid="pf-none">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-status="done" data-testid="pf-none-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-status="done"
+            data-testid="pf-none-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-status="current" data-testid="pf-none-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-status="upcoming" data-testid="pf-none-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>The feature goes to the beta group.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-join="1"
+            data-status="upcoming"
+            data-testid="pf-none-5"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-status="upcoming" data-testid="pf-none-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>hotaru</h2>
+        <ol class="toki-timeline" data-flow="2" data-preset="hotaru" data-testid="pf-hotaru">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-status="done" data-testid="pf-hotaru-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-status="done"
+            data-testid="pf-hotaru-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-status="current" data-testid="pf-hotaru-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-status="upcoming"
+            data-testid="pf-hotaru-4"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>The feature goes to the beta group.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-join="1"
+            data-status="upcoming"
+            data-testid="pf-hotaru-5"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-status="upcoming" data-testid="pf-hotaru-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>kawa</h2>
+        <ol class="toki-timeline" data-flow="2" data-preset="kawa" data-testid="pf-kawa">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-status="done" data-testid="pf-kawa-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-status="done"
+            data-testid="pf-kawa-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-status="current" data-testid="pf-kawa-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-status="upcoming" data-testid="pf-kawa-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>The feature goes to the beta group.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-join="1"
+            data-status="upcoming"
+            data-testid="pf-kawa-5"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-status="upcoming" data-testid="pf-kawa-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>kinen</h2>
+        <ol class="toki-timeline" data-flow="2" data-preset="kinen" data-testid="pf-kinen">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-status="done" data-testid="pf-kinen-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-status="done"
+            data-testid="pf-kinen-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-status="current" data-testid="pf-kinen-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-status="upcoming" data-testid="pf-kinen-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>The feature goes to the beta group.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-join="1"
+            data-status="upcoming"
+            data-testid="pf-kinen-5"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-status="upcoming" data-testid="pf-kinen-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

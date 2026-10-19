@@ -1,0 +1,98 @@
+/*
+ * Variants and Status: how much weight an Item carries (compact or milestone) and where it stands (done, current or
+ * upcoming). These rules only change the parts; layout.css keeps the Side, Alternate and horizontal geometry.
+ *
+ * The Marker is centered in its own column in the vertical layout and in its own row in the horizontal one, and the
+ * Line is centered on that column or row. Resizing the Marker therefore keeps the Line through its center without
+ * touching --_toki-columns or --_toki-line-center, whichever Side the Card is on.
+ */
+
+/* Compact: text only. */
+.toki-timeline > .toki-item[data-variant="compact"] > .toki-marker {
+  inline-size: var(--toki-compact-marker-size, 1rem);
+  block-size: var(--toki-compact-marker-size, 1rem);
+}
+
+.toki-timeline > .toki-item[data-variant="compact"] > .toki-card {
+  padding: 0;
+  border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* An Arrow is made of borders, so zero widths hide it on every Side. */
+.toki-timeline > .toki-item[data-variant="compact"] > .toki-card::before {
+  border-width: 0;
+}
+
+/*
+ * The gap to the next Item is the Item's block-end padding. It also applies while a horizontal Timeline is Collapsed,
+ * which is the vertical layout; an expanded horizontal Timeline spaces its Items with the Timeline's column-gap, so the
+ * reset rules below keep this padding at 0 there.
+ */
+.toki-timeline > .toki-item[data-variant="compact"]:not(:last-child) {
+  padding-block-end: var(--toki-compact-gap, 1rem);
+}
+
+@container toki (inline-size >= 48rem) {
+  .toki-timeline[data-orientation="horizontal"]:is(:not([data-collapse]), [data-collapse="md"]) > .toki-item[data-variant="compact"] {
+    padding-block-end: 0;
+  }
+}
+
+@container toki (inline-size >= 32rem) {
+  .toki-timeline[data-orientation="horizontal"][data-collapse="sm"] > .toki-item[data-variant="compact"] {
+    padding-block-end: 0;
+  }
+}
+
+@container toki (inline-size >= 64rem) {
+  .toki-timeline[data-orientation="horizontal"][data-collapse="lg"] > .toki-item[data-variant="compact"] {
+    padding-block-end: 0;
+  }
+}
+
+.toki-timeline[data-orientation="horizontal"][data-collapse="never"] > .toki-item[data-variant="compact"] {
+  padding-block-end: 0;
+}
+
+/* Milestone: a larger Marker and a Card border in the accent color. */
+.toki-timeline > .toki-item[data-variant="milestone"] > .toki-marker {
+  inline-size: var(--toki-milestone-marker-size, 3.5rem);
+  block-size: var(--toki-milestone-marker-size, 3.5rem);
+}
+
+.toki-timeline > .toki-item[data-variant="milestone"] > .toki-card {
+  border: var(--toki-milestone-card-border, 2px solid var(--toki-accent, currentColor));
+}
+
+/*
+ * Upcoming: its Segment is dashed by default. The fallback sits in the property that draws the Segment, not in
+ * --toki-line-style itself, so a --toki-line-style set by the user still wins.
+ *
+ * The vertical Segment draws the inline-start border. The horizontal one draws the block-start border, which
+ * horizontal.css gates through its private --_toki-h-segment-block-start-style; overriding that at the Item gives the
+ * horizontal Segment the same fallback. While a horizontal Timeline is Collapsed the gate leaves the block-start width
+ * at 0, so the extra style paints nothing.
+ */
+.toki-timeline > .toki-item[data-status="upcoming"]::before {
+  border-inline-start-style: var(--toki-line-style, dashed);
+}
+
+.toki-timeline[data-orientation="horizontal"] > .toki-item[data-status="upcoming"] {
+  --_toki-h-segment-block-start-style: var(--toki-line-style, dashed);
+}
+
+/*
+ * Current: an accent ring outside the existing ring. The existing spread (the clamp in layout.css) is the inner layer;
+ * the outer layer adds the same width again in --toki-current-ring-color.
+ */
+.toki-timeline > .toki-item[data-status="current"] > .toki-marker {
+  --_toki-current-ring-offset: clamp(0px, var(--toki-marker-size, 2.5rem), var(--toki-marker-ring-width, 0.25rem));
+  box-shadow:
+    0 0 0 calc(var(--_toki-current-ring-offset) * 2) var(--toki-current-ring-color, var(--toki-accent, currentColor)),
+    0 0 0 var(--_toki-current-ring-offset) var(--toki-marker-ring-color, Canvas);
+}
+
+/* Done has no rule of its own: the default look leaves it unchanged. */

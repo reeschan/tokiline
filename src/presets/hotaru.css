@@ -1,0 +1,245 @@
+/*
+ * hotaru (firefly): a quiet glow for a dark page.
+ *
+ * One hue, mixed with currentColor and Canvas, colors every part. The preset sits below the page's own unlayered CSS in
+ * the cascade, so a user's --toki-accent on the Timeline wins over the default here without !important.
+ *
+ * The light band that flows along the Line is an Item's ::after over its Segment: absolute over the vertical Line, and a
+ * grid item in the Marker's row of an expanded horizontal Timeline. It moves only by transform, and only inside
+ * prefers-reduced-motion: no-preference; without motion the band and the current Marker's glow stay lit where they are.
+ *
+ * Nothing here changes the layout or writes a tokiline private property (--_toki-*).
+ *
+ * A Flow draws its Lane Lines and its Fork and Join bends through an Item's ::before and ::after and the Marker's
+ * ::before, so those rules are left out on a Timeline with data-flow. The current Marker's ::after ripple does not
+ * clash with anything a Flow draws, so it still runs there.
+ */
+
+@layer tokiline.preset {
+  .toki-timeline[data-preset="hotaru"] {
+    --toki-accent: oklch(78% 0.17 92);
+    --toki-line-color: color-mix(in oklab, var(--toki-accent) 55%, Canvas);
+    --toki-marker-bg: var(--toki-accent);
+    --toki-marker-ring-color: color-mix(in oklab, var(--toki-accent) 30%, Canvas);
+    --toki-current-ring-color: color-mix(in oklab, var(--toki-accent) 65%, transparent);
+    --toki-card-bg: color-mix(in oklab, var(--toki-accent) 8%, Canvas);
+    --toki-card-border: 1px solid color-mix(in oklab, var(--toki-accent) 25%, transparent);
+    --toki-card-shadow: 0 0 1.25rem color-mix(in oklab, var(--toki-accent) 18%, transparent);
+    --toki-meta-fg: color-mix(in oklab, var(--toki-accent) 45%, currentColor);
+  }
+
+  /*
+   * The light band that crosses the Segment. It starts at the Segment's inline-start (the top of a vertical Item) and is a
+   * fifth of the Segment long, bright in its middle; the animation moves it by four times its own length, so it stays
+   * inside the Segment and never adds to the page's or the Timeline's scrollable area. Its ::after paints after every
+   * part of a vertical Item, so the stripe also passes over the Marker like a glint.
+   */
+  .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item::after {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: calc(var(--_toki-line-center) - var(--toki-line-width, 2px));
+    inline-size: calc(var(--toki-line-width, 2px) * 2);
+    block-size: 20%;
+    border-radius: 999px;
+    background-image: linear-gradient(to bottom, transparent, color-mix(in oklab, var(--toki-accent) 85%, transparent) 50%, transparent);
+    box-shadow: 0 0 0.5rem color-mix(in oklab, var(--toki-accent) 30%, transparent);
+    pointer-events: none;
+  }
+
+  /*
+   * Expanded horizontal Timeline: the band becomes a grid item in the Item's Marker row, a fifth of the Segment wide at
+   * its inline-start, and its gradient runs inline. These four blocks mirror the gates in horizontal.css, so a Collapsed
+   * Timeline keeps the vertical band above. The animation name is a value only; nothing animates outside the
+   * no-preference media query below.
+   */
+  @container toki (inline-size >= 48rem) {
+    .toki-timeline[data-preset="hotaru"][data-orientation="horizontal"]:is(:not([data-collapse]), [data-collapse="md"]):not([data-flow])
+      > .toki-item::after {
+      position: static;
+      grid-area: 2 / 1;
+      align-self: center;
+      justify-self: start;
+      block-size: calc(var(--toki-line-width, 2px) * 2);
+      inline-size: 20%;
+      background-image: linear-gradient(
+        to right,
+        transparent 40%,
+        color-mix(in oklab, var(--toki-accent) 85%, transparent) 50%,
+        transparent 60%
+      );
+      --_hotaru-flow-name: toki-hotaru-flow-inline;
+    }
+  }
+
+  @container toki (inline-size >= 32rem) {
+    .toki-timeline[data-preset="hotaru"][data-orientation="horizontal"][data-collapse="sm"]:not([data-flow]) > .toki-item::after {
+      position: static;
+      grid-area: 2 / 1;
+      align-self: center;
+      justify-self: start;
+      block-size: calc(var(--toki-line-width, 2px) * 2);
+      inline-size: 20%;
+      background-image: linear-gradient(
+        to right,
+        transparent 40%,
+        color-mix(in oklab, var(--toki-accent) 85%, transparent) 50%,
+        transparent 60%
+      );
+      --_hotaru-flow-name: toki-hotaru-flow-inline;
+    }
+  }
+
+  @container toki (inline-size >= 64rem) {
+    .toki-timeline[data-preset="hotaru"][data-orientation="horizontal"][data-collapse="lg"]:not([data-flow]) > .toki-item::after {
+      position: static;
+      grid-area: 2 / 1;
+      align-self: center;
+      justify-self: start;
+      block-size: calc(var(--toki-line-width, 2px) * 2);
+      inline-size: 20%;
+      background-image: linear-gradient(
+        to right,
+        transparent 40%,
+        color-mix(in oklab, var(--toki-accent) 85%, transparent) 50%,
+        transparent 60%
+      );
+      --_hotaru-flow-name: toki-hotaru-flow-inline;
+    }
+  }
+
+  .toki-timeline[data-preset="hotaru"][data-orientation="horizontal"][data-collapse="never"]:not([data-flow]) > .toki-item::after {
+    position: static;
+    grid-area: 2 / 1;
+    align-self: center;
+    justify-self: start;
+    block-size: calc(var(--toki-line-width, 2px) * 2);
+    inline-size: 20%;
+    background-image: linear-gradient(
+      to right,
+      transparent 40%,
+      color-mix(in oklab, var(--toki-accent) 85%, transparent) 50%,
+      transparent 60%
+    );
+    --_hotaru-flow-name: toki-hotaru-flow-inline;
+  }
+
+  /* In a horizontal Timeline the inline direction is the Line's, so the band follows it in right-to-left writing too. */
+  .toki-timeline[data-preset="hotaru"][data-orientation="horizontal"] > .toki-item:dir(rtl) {
+    --_hotaru-inline-sign: -1;
+  }
+
+  /*
+   * The current Marker's glow: a blurred halo drawn from the start, brightness and size led by opacity and scale. The
+   * ripple is a ring at the Marker's edge that expands and fades, with a pause between ripples. Both are decorative, so
+   * they never take a pointer event.
+   */
+  .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item[data-status="current"] > .toki-marker::before {
+    content: "";
+    position: absolute;
+    inset: -70%;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in oklab, var(--toki-accent) 70%, transparent) 0%, transparent 70%);
+    filter: blur(0.35rem);
+    opacity: 0.55;
+    scale: 0.9;
+    pointer-events: none;
+  }
+
+  .toki-timeline[data-preset="hotaru"] > .toki-item[data-status="current"] > .toki-marker::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: max(1px, var(--toki-line-width, 2px)) solid color-mix(in oklab, var(--toki-accent) 60%, transparent);
+    border-radius: 50%;
+    opacity: 0.3;
+    scale: 1.15;
+    pointer-events: none;
+  }
+
+  @keyframes toki-hotaru-flow-block {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(400%);
+    }
+  }
+
+  @keyframes toki-hotaru-flow-inline {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(calc(400% * var(--_hotaru-inline-sign, 1)));
+    }
+  }
+
+  @keyframes toki-hotaru-breathe {
+    from {
+      opacity: 0.4;
+      scale: 0.85;
+    }
+
+    50% {
+      opacity: 0.85;
+      scale: 1.12;
+    }
+
+    to {
+      opacity: 0.4;
+      scale: 0.85;
+    }
+  }
+
+  @keyframes toki-hotaru-ripple {
+    from {
+      opacity: 0.55;
+      scale: 0.6;
+    }
+
+    60% {
+      opacity: 0;
+      scale: 2.1;
+    }
+
+    to {
+      opacity: 0;
+      scale: 2.1;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item::after {
+      animation: var(--_hotaru-flow-name, toki-hotaru-flow-block) 6s linear infinite;
+      animation-delay: var(--_hotaru-delay, 0s);
+    }
+
+    /* A fifth of a cycle apart, so the lights appear to pass from Item to Item instead of pulsing together. */
+    .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item:nth-child(5n + 2)::after {
+      --_hotaru-delay: -1.2s;
+    }
+
+    .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item:nth-child(5n + 3)::after {
+      --_hotaru-delay: -2.4s;
+    }
+
+    .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item:nth-child(5n + 4)::after {
+      --_hotaru-delay: -3.6s;
+    }
+
+    .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item:nth-child(5n + 5)::after {
+      --_hotaru-delay: -4.8s;
+    }
+
+    .toki-timeline[data-preset="hotaru"]:not([data-flow]) > .toki-item[data-status="current"] > .toki-marker::before {
+      animation: toki-hotaru-breathe 4.8s ease-in-out infinite;
+    }
+
+    .toki-timeline[data-preset="hotaru"] > .toki-item[data-status="current"] > .toki-marker::after {
+      animation: toki-hotaru-ripple 6.5s ease-out infinite;
+    }
+  }
+}

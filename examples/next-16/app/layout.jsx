@@ -1,4 +1,5 @@
 import "tokiline/style.css"
+import "tokiline/presets/hotaru.css"
 
 export const metadata = {
   title: "tokiline example",

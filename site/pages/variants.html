@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Variants and Status · tokiline</title>
+    <link rel="stylesheet" href="../shared/page.css" />
+  </head>
+  <body style="min-inline-size: 64rem">
+    <main>
+      <h1>Variants and Status</h1>
+      <p>
+        Variants give an Item its weight: a compact Item keeps only its text, while a milestone makes its Marker larger and its Card border
+        the accent color. Status shows where an Item stands: done keeps the default look, current adds a ring to its Marker, and upcoming
+        draws its Segment dashed.
+      </p>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Vertical</h2>
+        <ol class="toki-timeline" data-testid="v-vertical">
+          <li class="toki-item" data-testid="v-vertical-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-variant="compact" data-testid="v-vertical-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Note</h3>
+              <p>A small event that needs no frame of its own.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-variant="milestone" data-testid="v-vertical-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-status="done" data-testid="v-vertical-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Plan</h3>
+              <p>The plan is checked against the budget.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-status="current" data-testid="v-vertical-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-07">July 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-status="upcoming" data-testid="v-vertical-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Docs</h3>
+              <p>The documentation and the examples go out with the release.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 60rem">
+        <h2>Horizontal</h2>
+        <ol
+          class="toki-timeline"
+          data-orientation="horizontal"
+          data-collapse="never"
+          data-testid="v-horizontal"
+          tabindex="0"
+          aria-label="Horizontal Timeline, Variants and Status"
+        >
+          <li class="toki-item" data-testid="v-horizontal-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-variant="compact" data-testid="v-horizontal-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Note</h3>
+              <p>A small event that needs no frame of its own.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-variant="milestone" data-testid="v-horizontal-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-status="done" data-testid="v-horizontal-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Plan</h3>
+              <p>The plan is checked against the budget.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-status="current" data-testid="v-horizontal-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-07">July 2026</time></div>
+            <div class="toki-card">
+              <h3>Beta</h3>
+              <p>Early users try the beta and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-status="upcoming" data-testid="v-horizontal-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-10">October 2026</time></div>
+            <div class="toki-card">
+              <h3>Docs</h3>
+              <p>The documentation and the examples go out with the release.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

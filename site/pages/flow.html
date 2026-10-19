@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flow · tokiline</title>
+    <link rel="stylesheet" href="../shared/page.css" />
+  </head>
+  <body style="min-inline-size: 64rem">
+    <main>
+      <h1>Flow</h1>
+      <p>
+        A Flow lays its Items out along several Lanes. The Lane Columns form a narrow band whose width is the number of Lanes times
+        <code>--toki-lane-gap</code>, and every Card and Meta lines up in one column outside that band. The attributes below are the output
+        of <code>flowAttributes()</code>, written by hand as a plain HTML author would.
+      </p>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>One Lane</h2>
+        <ol class="toki-timeline" data-flow="1" data-testid="f-single" style="--toki-lane-gap: 3rem">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-single-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-testid="f-single-2">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Plan</h3>
+              <p>The plan is checked against the budget.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-single-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Fork and Join</h2>
+        <ol class="toki-timeline" data-flow="2" data-testid="f-fork-join" style="--toki-lane-gap: 3rem">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-fork-join-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-fork-join-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="f-fork-join-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+              <p>The notes are folded into the plan.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-fork-join-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-fork-join-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Reuse a freed column</h2>
+        <ol class="toki-timeline" data-flow="2" data-testid="f-reuse" style="--toki-lane-gap: 3rem">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-reuse-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="side"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-reuse-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Spike</h3>
+              <p>A short experiment checks an idea before it is scheduled.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="side" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-reuse-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Decide</h3>
+              <p>The experiment joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="other"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-reuse-4"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Prototype</h3>
+              <p>The freed column is reused by the next side Lane.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="other" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-reuse-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>The prototype joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-reuse-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 50rem">
+        <h2>Four Lanes at once</h2>
+        <ol class="toki-timeline" data-flow="4" data-testid="f-four" style="--toki-lane-gap: 3rem">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-four-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="a"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-four-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane a</h3>
+              <p>The first side Lane starts.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="b"
+            data-flow-col="3"
+            data-flow-through="1 2"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-four-3"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane b</h3>
+              <p>The second side Lane starts.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="c"
+            data-flow-col="4"
+            data-flow-through="1 2 3"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-four-4"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane c</h3>
+              <p>The third side Lane starts, so four Lanes run at once.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="a" data-flow-col="2" data-flow-through="1 3 4" data-flow-cap="end" data-testid="f-four-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane a ends</h3>
+              <p>The first side Lane is finished.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="b" data-flow-col="3" data-flow-through="1 4" data-flow-cap="end" data-testid="f-four-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane b ends</h3>
+              <p>The second side Lane is finished.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="c" data-flow-col="4" data-flow-through="1" data-flow-cap="end" data-testid="f-four-7">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-07">July 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane c ends</h3>
+              <p>The third side Lane is finished.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-four-8">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-08">August 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 50rem">
+        <h2>One color per Lane</h2>
+        <ol
+          class="toki-timeline"
+          data-flow="4"
+          data-testid="f-colors"
+          style="
+            --toki-lane-gap: 3rem;
+            --toki-lane-1-color: rgb(37, 99, 235);
+            --toki-lane-2-color: rgb(22, 163, 74);
+            --toki-lane-3-color: rgb(217, 119, 6);
+            --toki-lane-4-color: rgb(220, 38, 38);
+          "
+        >
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-colors-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The main Lane gets the first color.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="a"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-colors-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane a</h3>
+              <p>The second Lane gets the second color.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="b"
+            data-flow-col="3"
+            data-flow-through="1 2"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-colors-3"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane b</h3>
+              <p>The third Lane gets the third color.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="c"
+            data-flow-col="4"
+            data-flow-through="1 2 3"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-colors-4"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane c</h3>
+              <p>The fourth Lane gets the fourth color.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="a" data-flow-col="2" data-flow-through="1 3 4" data-flow-cap="end" data-testid="f-colors-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane a ends</h3>
+              <p>The Marker keeps the color of its Lane.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="b" data-flow-col="3" data-flow-through="1 4" data-flow-cap="end" data-testid="f-colors-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane b ends</h3>
+              <p>The Marker keeps the color of its Lane.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="c" data-flow-col="4" data-flow-through="1" data-flow-cap="end" data-testid="f-colors-7">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-07">July 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane c ends</h3>
+              <p>The Marker keeps the color of its Lane.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-colors-8">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-08">August 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The main Lane keeps its first color to the end.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Side start</h2>
+        <ol class="toki-timeline" data-flow="2" data-side="start" data-testid="f-start" style="--toki-lane-gap: 3rem">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-start-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-start-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="f-start-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-start-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-start-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 50rem">
+        <h2>Alternate is drawn as Side end</h2>
+        <ol class="toki-timeline" data-flow="2" data-collapse="never" data-testid="f-alternate" style="--toki-lane-gap: 3rem">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-alternate-1">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-alternate-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="f-alternate-3">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-alternate-4">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-alternate-5">
+            <div class="toki-marker"></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Default colors and gaps</h2>
+        <ol class="toki-timeline" data-flow="2" data-testid="f-plain">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-plain-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-plain-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-plain-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-plain-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Milestone in a Flow</h2>
+        <ol class="toki-timeline" data-flow="2" data-testid="f-milestone">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-milestone-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-variant="milestone"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-milestone-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>The milestone Marker still leaves room for the Fork's bend.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-milestone-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-milestone-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>A Flow in a Card</h2>
+        <ol class="toki-timeline" data-flow="2" data-testid="f-nested">
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="f-nested-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="f-nested-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="f-nested-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+              <ol class="toki-timeline" data-flow="1" data-testid="f-nested-inner">
+                <li class="toki-item" data-lane="inner" data-flow-col="1" data-flow-cap="both" data-testid="f-nested-inner-1">
+                  <div class="toki-marker"></div>
+                  <div class="toki-card">
+                    <h3>Nested Flow</h3>
+                    <p>A Flow inside a Card starts from its own attributes.</p>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="f-nested-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 50rem">
+        <h2>Horizontal Fork and Join</h2>
+        <ol
+          class="toki-timeline"
+          data-orientation="horizontal"
+          data-collapse="never"
+          data-flow="2"
+          data-testid="fh-fork-join"
+          style="--toki-lane-gap: 3rem"
+          tabindex="0"
+          aria-label="Horizontal Timeline, Flow, Fork and Join"
+        >
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="fh-fork-join-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-fork-join-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="fh-fork-join-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+              <p>The notes are folded into the plan.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="fh-fork-join-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="fh-fork-join-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 50rem">
+        <h2>Horizontal, four Lanes at once</h2>
+        <ol
+          class="toki-timeline"
+          data-orientation="horizontal"
+          data-collapse="never"
+          data-flow="4"
+          data-testid="fh-four"
+          style="--toki-lane-gap: 3rem"
+          tabindex="0"
+          aria-label="Horizontal Timeline, Flow, four Lanes at once"
+        >
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="fh-four-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="a"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-four-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane a</h3>
+              <p>The first side Lane starts.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="b"
+            data-flow-col="3"
+            data-flow-through="1 2"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-four-3"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane b</h3>
+              <p>The second side Lane starts.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="c"
+            data-flow-col="4"
+            data-flow-through="1 2 3"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-four-4"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane c</h3>
+              <p>The third side Lane starts, so four Lanes run at once.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="a" data-flow-col="2" data-flow-through="1 3 4" data-flow-cap="end" data-testid="fh-four-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane a ends</h3>
+              <p>The first side Lane is finished.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="b" data-flow-col="3" data-flow-through="1 4" data-flow-cap="end" data-testid="fh-four-6">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-06">June 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane b ends</h3>
+              <p>The second side Lane is finished.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="c" data-flow-col="4" data-flow-through="1" data-flow-cap="end" data-testid="fh-four-7">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-07">July 2026</time></div>
+            <div class="toki-card">
+              <h3>Lane c ends</h3>
+              <p>The third side Lane is finished.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="fh-four-8">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-08">August 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Horizontal, collapsed on Side end</h2>
+        <ol
+          class="toki-timeline"
+          data-orientation="horizontal"
+          data-flow="2"
+          data-testid="fh-collapse"
+          style="--toki-lane-gap: 3rem"
+          tabindex="0"
+          aria-label="Horizontal Timeline, Flow, collapsed on Side end"
+        >
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="fh-collapse-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-collapse-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="fh-collapse-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+              <p>The notes are folded into the plan.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="fh-collapse-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="fh-collapse-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 40rem">
+        <h2>Horizontal, collapsed on Side start</h2>
+        <ol
+          class="toki-timeline"
+          data-orientation="horizontal"
+          data-side="start"
+          data-flow="2"
+          data-testid="fh-collapse-start"
+          style="--toki-lane-gap: 3rem"
+          tabindex="0"
+          aria-label="Horizontal Timeline, Flow, collapsed on Side start"
+        >
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="fh-collapse-start-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-collapse-start-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="fh-collapse-start-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-join="1"
+            data-testid="fh-collapse-start-4"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="fh-collapse-start-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" style="inline-size: 50rem">
+        <h2>Horizontal, Alternate is drawn as Side end</h2>
+        <ol
+          class="toki-timeline"
+          data-orientation="horizontal"
+          data-side="alternate"
+          data-collapse="never"
+          data-flow="2"
+          data-testid="fh-alternate"
+          style="--toki-lane-gap: 3rem"
+          tabindex="0"
+          aria-label="Horizontal Timeline, Flow, Alternate is drawn as Side end"
+        >
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="fh-alternate-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-alternate-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="fh-alternate-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="fh-alternate-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="fh-alternate-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="fixture" dir="rtl" style="inline-size: 60rem">
+        <h2>Horizontal, right to left</h2>
+        <ol
+          class="toki-timeline"
+          dir="rtl"
+          data-orientation="horizontal"
+          data-collapse="never"
+          data-flow="2"
+          data-testid="fh-rtl"
+          style="--toki-lane-gap: 3rem"
+          tabindex="0"
+          aria-label="Horizontal Timeline, Flow, right to left"
+        >
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start" data-testid="fh-rtl-1">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-01">January 2026</time></div>
+            <div class="toki-card">
+              <h3>Kickoff</h3>
+              <p>The team agrees on the goals and the first milestones.</p>
+            </div>
+          </li>
+          <li
+            class="toki-item"
+            data-lane="feature"
+            data-flow-col="2"
+            data-flow-through="1"
+            data-flow-fork="1"
+            data-flow-cap="start"
+            data-testid="fh-rtl-2"
+          >
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-02">February 2026</time></div>
+            <div class="toki-card">
+              <h3>Draft the feature</h3>
+              <p>A smaller group starts on the feature while the main work goes on.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-testid="fh-rtl-3">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-03">March 2026</time></div>
+            <div class="toki-card">
+              <h3>Review</h3>
+              <p>Early users try the feature and send their feedback.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1" data-testid="fh-rtl-4">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-04">April 2026</time></div>
+            <div class="toki-card">
+              <h3>Fold it back</h3>
+              <p>The feature joins the main Lane after this event.</p>
+            </div>
+          </li>
+          <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end" data-testid="fh-rtl-5">
+            <div class="toki-marker"></div>
+            <div class="toki-meta"><time datetime="2026-05">May 2026</time></div>
+            <div class="toki-card">
+              <h3>Launch</h3>
+              <p>The first stable version ships.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>

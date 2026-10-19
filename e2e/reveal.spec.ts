@@ -54,7 +54,7 @@ test("3. passed Items and the final Card stay opaque at the bottom of the page",
   await frames(page)
   await expectOpaque(page.getByTestId("reveal-1").locator(".toki-card"))
   await expectOpaque(page.getByTestId("reveal-8").locator(".toki-card"))
-  await expectOpaque(page.locator(".toki-item").last().locator(".toki-card"))
+  await expectOpaque(page.getByTestId("plain").locator(".toki-item").last().locator(".toki-card"))
 })
 
 test("4. reduced motion leaves the offscreen Card opaque", async ({ page }) => {
@@ -100,4 +100,73 @@ test("7. the Card enters from its end Side", async ({ page }) => {
   const final = await card.evaluate((card) => card.getBoundingClientRect().left)
   if (supported) expect(entering).toBeGreaterThan(final)
   else expect(Math.abs(entering - final)).toBeLessThanOrEqual(1)
+})
+
+async function centerTimeline(page: Page, timeline: Locator): Promise<void> {
+  await timeline.evaluate((timeline) => timeline.scrollIntoView({ block: "center", behavior: "instant" }))
+  await frames(page)
+}
+
+async function scrollTimelineToEnd(page: Page, timeline: Locator): Promise<void> {
+  await timeline.evaluate((timeline) => timeline.scrollTo({ left: timeline.scrollWidth, behavior: "instant" }))
+  await frames(page)
+}
+
+test("8. the horizontal Reveal follows the Timeline's own inline scroll", async ({ page }) => {
+  const supported = await supportsReveal(page)
+  const timeline = page.getByTestId("h-reveal")
+  const card = page.getByTestId("h-reveal-8").locator(".toki-card")
+  await centerTimeline(page, timeline)
+  if (supported) expect(await opacity(card)).toBeLessThan(1)
+  else await expectOpaque(card)
+  await scrollTimelineToEnd(page, timeline)
+  await expectOpaque(card)
+})
+
+test("9. a horizontal Card slides in from its Side, not inline", async ({ page }) => {
+  const supported = await supportsReveal(page)
+  if (!supported) return
+  const vertical = await page
+    .getByTestId("reveal-8")
+    .locator(".toki-card")
+    .evaluate((card) => getComputedStyle(card).animationName)
+  const horizontal = await page
+    .getByTestId("h-reveal-8")
+    .locator(".toki-card")
+    .evaluate((card) => getComputedStyle(card).animationName)
+  expect(vertical).toBe("toki-reveal-slide")
+  expect(horizontal).not.toBe(vertical)
+})
+
+test("10. Firefox and reduced motion leave every horizontal Card opaque", async ({ page }) => {
+  const supported = await supportsReveal(page)
+  const timeline = page.getByTestId("h-reveal")
+  await centerTimeline(page, timeline)
+  if (!supported) await expectOpaque(timeline.locator(".toki-card"))
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await frames(page)
+  await expectOpaque(timeline.locator(".toki-card"))
+})
+
+test("11. the horizontal Reveal has finished for the Items in the initial view", async ({ page }) => {
+  // axe measures contrast on every Item whose opacity is not 0, including one that is only partly inside the
+  // Timeline's inline scrollport and is therefore mid-Reveal. The fixture is 35rem wide: the first two 16rem Items
+  // and their 2rem gap fit inside it, so their Reveal has finished, while the third Item starts at 36rem, wholly
+  // outside. That geometry keeps the initial state free of the translucent, partly visible Item that made axe fail;
+  // the Reveal rule itself is unchanged. This test guards that geometry.
+  const supported = await supportsReveal(page)
+  const timeline = page.getByTestId("h-reveal")
+  await timeline.evaluate((timeline) => timeline.scrollTo({ left: 0, behavior: "instant" }))
+  await centerTimeline(page, timeline)
+
+  const first = page.getByTestId("h-reveal-1")
+  const second = page.getByTestId("h-reveal-2")
+  const third = page.getByTestId("h-reveal-3")
+  await expectOpaque(first.locator(".toki-card, .toki-marker, .toki-meta"))
+  await expectOpaque(second.locator(".toki-card, .toki-marker, .toki-meta"))
+
+  const [timelineBox, thirdBox] = await Promise.all([timeline.boundingBox(), third.boundingBox()])
+  if (!timelineBox || !thirdBox) throw new Error("the horizontal Timeline and its third Item must have a box")
+  expect(thirdBox.x).toBeGreaterThanOrEqual(timelineBox.x + timelineBox.width)
+  if (supported) expect(await opacity(third.locator(".toki-meta"))).toBe(0)
 })
