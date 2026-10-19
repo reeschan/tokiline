@@ -33,7 +33,7 @@ repo: GitHub repository {
   class: zone
   icon: https://cdn.simpleicons.org/github/__MONO__
 
-  css: "CSS and HTML contract\nsource of truth, @layer tokiline" {
+  css: "CSS and HTML contract\nsource of truth, @layer tokiline\nhorizontal, item variants, flow" {
     class: svc
     icon: https://cdn.simpleicons.org/css/__MONO__
   }
@@ -41,6 +41,16 @@ repo: GitHub repository {
   ts: "TypeScript helpers\nclasses and data-* attributes" {
     class: svc
     icon: https://cdn.simpleicons.org/typescript
+  }
+
+  flow: "flowAttributes\npure function, Lanes, Fork and Join" {
+    class: svc
+    icon: https://cdn.simpleicons.org/typescript
+  }
+
+  presets: "Presets\nkawa, hotaru, kinen, separate stylesheets" {
+    class: svc
+    icon: https://cdn.simpleicons.org/css/__MONO__
   }
 
   react: "React components\nServer Components, optional" {
@@ -85,7 +95,7 @@ app: Your app {
   icon: https://icons.terrastruct.com/tech%2Flaptop.svg
   direction: down
 
-  html: "Plain HTML\nclasses and style.css" {
+  html: "Plain HTML\nclasses, style.css and presets" {
     class: svc
     icon: https://cdn.simpleicons.org/html5
   }
@@ -100,7 +110,7 @@ app: Your app {
     icon: https://cdn.simpleicons.org/tailwindcss
   }
 
-  vue: "Vue, Svelte, Astro\nTypeScript helpers" {
+  vue: "Vue, Svelte, Astro\nTypeScript helpers, flowAttributes" {
     class: svc
     icon: https://cdn.simpleicons.org/vuedotjs
   }
@@ -113,10 +123,13 @@ browser: "Browser\nno runtime JavaScript" {
 
 repo.css -> repo.build
 repo.ts -> repo.build
+repo.flow -> repo.build
+repo.presets -> repo.build
+repo.flow -> repo.ts: data-* attributes {style.stroke-dash: 4}
 repo.react -> repo.build
 repo.build -> actions.release: dist
 repo -> actions.ci: every push {style.stroke-dash: 4}
 actions.release -> npm: publish
 npm -> app: npm install tokiline
-app -> browser: HTML and style.css
+app -> browser: "HTML, style.css, optional preset"
 actions.pages -> browser: demo {style.stroke-dash: 4}

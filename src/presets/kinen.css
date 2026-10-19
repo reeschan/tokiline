@@ -1,0 +1,144 @@
+/*
+ * kinen (記念): ivory and gold for a release or an anniversary. The look comes from one gold hue mixed with currentColor
+ * and Canvas, so it follows the page's light or dark scheme. Only a Timeline with data-preset="kinen" changes: the
+ * layout stays the same, and every bit of motion is opt-out through prefers-reduced-motion.
+ *
+ * The edge of the current Card is a conic gradient in its border box, turned by an angle registered with @property. A
+ * browser without @property still paints the gradient at its initial 0deg: the gold edge stays, it just does not turn.
+ */
+@layer tokiline.preset {
+  @property --toki-kinen-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  .toki-timeline[data-preset="kinen"] {
+    --toki-accent: oklch(0.79 0.12 85);
+    --toki-line-color: color-mix(in oklab, var(--toki-accent) 42%, transparent);
+    --toki-marker-bg: var(--toki-accent);
+    --toki-marker-fg: Canvas;
+    --toki-marker-ring-color: Canvas;
+    --toki-card-bg: color-mix(in oklab, var(--toki-accent) 8%, Canvas);
+    --toki-card-border: 1px solid color-mix(in oklab, var(--toki-accent) 38%, transparent);
+    --toki-card-shadow: 0 1px 2px color-mix(in oklab, var(--toki-accent) 24%, transparent);
+    --toki-meta-fg: color-mix(in oklab, currentColor 70%, var(--toki-accent));
+  }
+
+  /*
+   * The current Card's edge. The first background layer is the Card's own fill clipped to its padding box; the second,
+   * clipped to the border box, is only visible in the 1px border around it. The transparent border-color lets that
+   * gradient through, and the Card's border-radius clips both, so the light follows the rounded corners.
+   *
+   * The colours are the same gold hue: a dim ring, a brighter arc, then the dim ring again. The bright arc is what
+   * seems to travel when --toki-kinen-angle turns.
+   */
+  .toki-timeline[data-preset="kinen"] > .toki-item:not([data-variant="compact"])[data-status="current"] > .toki-card {
+    border-color: transparent;
+    background-image:
+      linear-gradient(
+        var(--toki-card-bg, color-mix(in oklab, currentColor 6%, Canvas)),
+        var(--toki-card-bg, color-mix(in oklab, currentColor 6%, Canvas))
+      ),
+      conic-gradient(
+        from var(--toki-kinen-angle, 0deg),
+        color-mix(in oklab, var(--toki-accent) 42%, transparent) 0deg,
+        color-mix(in oklab, var(--toki-accent) 42%, transparent) 250deg,
+        color-mix(in oklab, var(--toki-accent) 70%, currentColor) 300deg,
+        color-mix(in oklab, var(--toki-accent) 42%, transparent) 350deg,
+        color-mix(in oklab, var(--toki-accent) 42%, transparent) 1turn
+      );
+    background-origin: padding-box, border-box;
+    background-clip: padding-box, border-box;
+  }
+
+  /*
+   * The shadow layer. Its own box is empty; only the box-shadow around it paints, so it sits on top of the Card without
+   * hiding any of its content. Its opacity is what changes on hover and focus.
+   */
+  .toki-timeline[data-preset="kinen"] > .toki-item:not([data-variant="compact"]) > .toki-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0.6rem 1.2rem color-mix(in oklab, var(--toki-accent) 40%, transparent);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /*
+   * The light that runs along the date of the current Item. The band is mixed in the color blend mode, which keeps the
+   * backdrop's lightness: the letters stay as easy to read as they were, and only take on the gold hue as the band
+   * passes. The direction follows the writing direction, so the sweep runs from the inline start to the inline end.
+   */
+  .toki-timeline[data-preset="kinen"] > .toki-item[data-status="current"] > .toki-meta {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toki-timeline[data-preset="kinen"] > .toki-item[data-status="current"] > .toki-meta::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 40%;
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--toki-accent) 80%, currentColor 20%), transparent);
+    mix-blend-mode: color;
+    opacity: 0.8;
+    pointer-events: none;
+    translate: calc(-120% * var(--_kinen-sheen-direction, 1)) 0;
+  }
+
+  .toki-timeline[data-preset="kinen"] > .toki-item[data-status="current"] > .toki-meta:dir(rtl)::after {
+    --_kinen-sheen-direction: -1;
+  }
+
+  @keyframes toki-kinen-ring {
+    from {
+      --toki-kinen-angle: 0deg;
+    }
+
+    to {
+      --toki-kinen-angle: 1turn;
+    }
+  }
+
+  @keyframes toki-kinen-sheen {
+    0%,
+    55% {
+      translate: calc(-120% * var(--_kinen-sheen-direction, 1)) 0;
+    }
+
+    85%,
+    100% {
+      translate: calc(320% * var(--_kinen-sheen-direction, 1)) 0;
+    }
+  }
+
+  /* Motion is opt-in: every animation and every movement lives in this block. */
+  @media (prefers-reduced-motion: no-preference) {
+    .toki-timeline[data-preset="kinen"] > .toki-item > .toki-card {
+      transition: translate 180ms ease;
+    }
+
+    .toki-timeline[data-preset="kinen"] > .toki-item > .toki-card::after {
+      transition: opacity 180ms ease;
+    }
+
+    .toki-timeline[data-preset="kinen"] > .toki-item > .toki-card:is(:hover, :focus-within) {
+      translate: 0 -0.25rem;
+    }
+
+    .toki-timeline[data-preset="kinen"] > .toki-item > .toki-card:is(:hover, :focus-within)::after {
+      opacity: 1;
+    }
+
+    .toki-timeline[data-preset="kinen"] > .toki-item:not([data-variant="compact"])[data-status="current"] > .toki-card {
+      animation: toki-kinen-ring 7s linear infinite;
+    }
+
+    .toki-timeline[data-preset="kinen"] > .toki-item[data-status="current"] > .toki-meta::after {
+      animation: toki-kinen-sheen 7s ease-in-out infinite;
+    }
+  }
+}

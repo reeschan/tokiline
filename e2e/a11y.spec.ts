@@ -1,7 +1,20 @@
 import AxeBuilder from "@axe-core/playwright"
 import { expect, test } from "@playwright/test"
 
-const pages = ["/", "/pages/sides.html", "/pages/alternate.html", "/pages/reveal.html", "/pages/theming.html"]
+const pages = [
+  "/",
+  "/pages/sides.html",
+  "/pages/alternate.html",
+  "/pages/reveal.html",
+  "/pages/theming.html",
+  "/pages/horizontal.html",
+  "/pages/variants.html",
+  "/pages/flow.html",
+  "/pages/preset-hotaru.html",
+  "/pages/preset-kawa.html",
+  "/pages/preset-kinen.html",
+  "/pages/preset-flow.html",
+]
 
 for (const path of pages) {
   test(`axe finds no WCAG A or AA violation on ${path}`, async ({ page }) => {

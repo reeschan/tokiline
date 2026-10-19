@@ -17,7 +17,11 @@
 - 任意の React 版。Server Component として描画でき、Next.js の App Router と Pages Router で動き、React 18.2 以上と 19 に対応します。
 - 実行時の JavaScript はゼロ。
 - すべての規則が `@layer tokiline` に入っているので、自分の CSS や Tailwind のクラスが `!important` なしで勝ちます。
-- コンテナクエリでの Collapse。Alternate の折りたたみは、画面ではなくタイムライン自身の幅で決まります。
+- コンテナクエリでの Collapse。Alternate の折りたたみも、横向きの Timeline が縦になるのも、画面ではなくタイムライン自身の幅で決まります。
+- 横向きの Orientation。Timeline 自身が横スクロールして Item ごとに止まります。
+- Variant と Status。`compact` と `milestone` の重み、`done`・`current`・`upcoming` の状態を表せます。
+- 3 つの Preset (`hotaru`・`kawa`・`kinen`)。動きのある見た目を、それぞれ別の CSS ファイルで読み込みます。
+- Flow。Fork と Join をする Lane を、実行時の JavaScript なしで `flowAttributes()` が配置します。
 - 右から左に書く言語に対応。左右は論理方向 (`start` と `end`) なので、自動で反転します。
 
 ## Architecture
@@ -209,7 +213,191 @@ Alternate の Timeline が狭くて両側を使えないとき、すべての Ca
 <Timeline collapse="lg">…</Timeline>
 ```
 
-`collapse` は、Alternate のときだけ効きます。
+`collapse` は、Alternate ではすべての Card が `end` 側に移る幅を、横向きの Timeline では縦になる幅を決めます。
+
+## Orientation
+
+Orientation は、Line が走る向きです。既定は縦です。
+
+| 値           | HTML                                           | React                                     |
+| ------------ | ---------------------------------------------- | ----------------------------------------- |
+| `vertical`   | 指定なし、または `data-orientation="vertical"` | 指定なし、または `orientation="vertical"` |
+| `horizontal` | `data-orientation="horizontal"`                | `orientation="horizontal"`                |
+
+```html
+<ol class="toki-timeline" data-orientation="horizontal" data-collapse="never" tabindex="0" aria-label="Release history">
+  …
+</ol>
+```
+
+```tsx
+<Timeline orientation="horizontal" collapse="never" tabIndex={0} aria-label="Release history">
+  …
+</Timeline>
+```
+
+横向きの Timeline では、Line が横に走り、各 Item の幅は `--toki-item-size` (既定 `16rem`) になります。Timeline 自身が横のスクロールコンテナになり、Line の向きにスクロールして Item ごとに止まります。JavaScript は要りません。Item どうしの間隔は `--toki-gap` です。
+
+自分でスクロールするので、横向きの Timeline には `tabindex="0"` と、内容を表す `aria-label` を付けます。キーボードでもそこへ届くようにするためです。React では `<Timeline orientation="horizontal" tabIndex={0} aria-label="…">` のように props で渡します (`Timeline` はほかの props を `<ol>` にそのまま渡します)。
+
+Side の `start` は Line の上、`end` は下です。Meta は Line をはさんで Card の反対側に、Marker にそろって並びます。Alternate では Item ごとに上下が入れ替わります。右から左に書く言語では、時間も右から左に進みます。
+
+横向きの Timeline は、`collapse` の閾値 (`sm` 32rem・`md` 48rem・`lg` 64rem) より狭いと縦になります。Alternate が折りたたまれるのと同じです。縦になったあとは、縦の決まりに従います。`never` ならいつでも横のまま、`always` ならいつでも縦です。Collapse しているあいだも、Timeline はスクロールコンテナのままです。
+
+## Variants and Status
+
+Variant は Item の重み、Status は今との関係を表します。
+
+| 値          | HTML                       | React                 | 意味                                                                                |
+| ----------- | -------------------------- | --------------------- | ----------------------------------------------------------------------------------- |
+| `compact`   | `data-variant="compact"`   | `variant="compact"`   | 小さい Item。Card の枠・背景・影・Arrow を消し、Marker を小さくし、間隔を詰めます。 |
+| `milestone` | `data-variant="milestone"` | `variant="milestone"` | 大事な Item。Marker を大きくし、Card の枠をアクセントの色にします。                 |
+
+| 値         | HTML                     | React               | 意味                                                 |
+| ---------- | ------------------------ | ------------------- | ---------------------------------------------------- |
+| `done`     | `data-status="done"`     | `status="done"`     | 完了。既定の見た目は変わりません。                   |
+| `current`  | `data-status="current"`  | `status="current"`  | 今。Marker にアクセントの色の輪がもう 1 つ付きます。 |
+| `upcoming` | `data-status="upcoming"` | `status="upcoming"` | これから。Segment が点線になります。                 |
+
+Variant の無い Item は普通の Item、Status の無い Item は Status なしです。
+
+```html
+<li class="toki-item" data-variant="milestone" data-status="current">…</li>
+```
+
+```tsx
+<TimelineItem variant="milestone" status="current">
+  …
+</TimelineItem>
+```
+
+縦・横・Flow のどれでも使えます。Flow では、`upcoming` の Status が自分の Lane の線を点線にします。大きさと輪は `--toki-compact-marker-size`・`--toki-compact-gap`・`--toki-milestone-marker-size`・`--toki-milestone-card-border`・`--toki-current-ring-color` で変えられます ([Theming](#theming))。
+
+Status は見た目だけで伝わります。tokiline は読み上げの文言を足さないので、Card か Meta に言葉を書いてください。
+
+## Presets
+
+Preset は、名前で選ぶ見た目のことです。Preset ごとに別の CSS ファイルとして配るので、使うものだけを読み込みます。
+
+```js
+import "tokiline/style.css"
+import "tokiline/presets/hotaru.css"
+```
+
+そのうえで、Timeline に `data-preset` を付けます。その属性が付いた Timeline だけが変わるので、1 つのページで Preset を使い分けられます。
+
+```html
+<ol class="toki-timeline" data-preset="hotaru">
+  …
+</ol>
+```
+
+```tsx
+<Timeline preset="hotaru">…</Timeline>
+```
+
+| Preset   | 見た目                                                                                                                                                                                                                                                                       |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `hotaru` | 暗いページのための、蛍のような発光。光の帯が Line をゆっくり流れ、`current` の Marker が呼吸するように光り、ときどき波紋が広がります。                                                                                                                                       |
+| `kawa`   | ロードマップや変更履歴のための、青磁から水色。`done` の Segment はアクセントの実線、`upcoming` の Segment は流れる点線になります。スクロール連動アニメーションに対応したブラウザでは、`done` の Segment が読んだところまで伸び、対応していなければ最初から全体が塗られます。 |
+| `kinen`  | リリースや記念日のための、アイボリーと金色。`current` の Card の縁を光が一周し、`current` の Meta に光が走り、Card はホバーとフォーカスで浮きます。                                                                                                                          |
+
+色を変えるときは、Timeline (またはその祖先) に `--toki-accent` を指定します。ほかの色はそのアクセントと `currentColor`・`Canvas` から作るので、Preset はライトとダークの両方のページに合います。Preset の規則は `@layer tokiline` の下位層の `@layer tokiline.preset` に入っているので、自分の CSS が `!important` なしで勝ちます。
+
+動きはすべて `prefers-reduced-motion: no-preference` の中だけにあります。視差効果を減らす設定のときは止まります。`@property` とスクロール連動アニメーションは強化扱いです。対応していないブラウザでは止まった見た目になり、最初の状態で中身が隠れることもありません。
+
+Preset は縦・横・Flow のどれでも使えます。Flow と一緒に使うと、Lane の線と Fork・Join の曲がり線はそのまま残ります。
+
+## Flow
+
+Flow は、Item が複数の Lane に分かれて走る Timeline です。並びは 1 本のリストのままで、各 Item はちょうど 1 つの Lane に乗り、Lane は Fork (分かれる) と Join (合わさる) をします。`flowAttributes()` が、`lane`・`fork`・`join` の名前から列の番号と各行の線を計算します。
+
+```ts
+import { flowAttributes } from "tokiline"
+
+const layout = flowAttributes([{ lane: "main" }, { lane: "feature", fork: "main" }, { lane: "feature", join: "main" }, { lane: "main" }])
+
+// layout.timeline
+// { "data-flow": "2" }
+// layout.items[1]
+// { "data-lane": "feature", "data-flow-col": "2", "data-flow-through": "1", "data-flow-fork": "1", "data-flow-cap": "start" }
+```
+
+`flowAttributes()` は、時間の順に並べた Item ごとのオブジェクトを受け取ります。
+
+| 項目   | 意味                                                                |
+| ------ | ------------------------------------------------------------------- |
+| `lane` | その Item が乗る Lane の名前。                                      |
+| `fork` | その Item の Lane がここから分かれて始まるとき、分かれる元の Lane。 |
+| `join` | その Item の後に、その Lane が合わさる先の Lane。                   |
+
+最初の Lane は `fork` なしで始まり、ほかの Lane は Fork から始まります。Lane は、その Lane を参照する最後の行まで走ります。参照は、その Lane の Item、その Lane から Fork する Item、その Lane へ Join する Item です。その後、列は空いて、次の Fork が再利用します。`end` は、Lane の最後の Item が最後の参照でもあり、Join しないときだけ付きます。
+
+`flowAttributes()` は `{ timeline, items }` を返します。Timeline に付ける属性 1 つと、Item ごとの属性の配列です。どちらも `data-*` だけで、style の変数は含みません。Flow にならない Item を渡すと `FlowError` を投げます。
+
+- Join した Lane に、また Item を置いた。
+- 走っていない Lane から Fork した。
+- 走っていない Lane へ Join した。
+- すでに走っている Lane の Item に `fork` を書いた。
+- 根の Lane があるのに、`fork` なしで別の Lane を始めた。
+- 自分の Lane へ Join した。
+- `lane`・`fork`・`join` の名前に空文字を書いた。
+- 同時に 5 本以上の Lane が走った。
+
+### With React
+
+`layout.timeline` を `Timeline` に、`layout.items[i]` を対応する `TimelineItem` に渡すと、属性が要素に展開されます。
+
+```tsx
+const layout = flowAttributes(items)
+
+<Timeline flow={layout.timeline}>
+  {items.map((item, index) => (
+    <TimelineItem key={`${item.lane}-${index}`} flow={layout.items[index]}>
+      …
+    </TimelineItem>
+  ))}
+</Timeline>
+```
+
+### With HTML
+
+`flowAttributes()` を使わず、属性を手で書くこともできます。
+
+| 属性                                       | 付ける場所 | 意味                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------------------------ | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data-flow="<n>"`                          | Timeline   | 同時に走る Lane の本数の最大 (`1`〜`4`)。Lane の列の帯の幅は `n` × `--toki-lane-gap` です。                                                                                                                                                                                                                                                                                      |
+| `data-lane="<名前>"`                       | Item       | Lane の名前。自分のスタイル用のフックで、描画には使いません。                                                                                                                                                                                                                                                                                                                    |
+| `data-flow-col="<k>"`                      | Item       | その Item の Lane の列 (`1`〜`4`)。Marker はこの列に置かれます。                                                                                                                                                                                                                                                                                                                 |
+| `data-flow-through="<k>…"`                 | Item       | その行を上端から下端まで通る、ほかの Lane の列。空白区切りです。無ければ付けません。CSS では `[data-flow-through~="2"]` で 1 つの列を選べます。                                                                                                                                                                                                                                  |
+| `data-flow-fork="<j>"`                     | Item       | この行で、列 `j` の Lane から新しい Lane が分かれます。行の上端の列 `j` から Marker へ曲がる線を描きます。                                                                                                                                                                                                                                                                       |
+| `data-flow-join="<j>"`                     | Item       | この Item の後で、その Lane が列 `j` の Lane へ合わさります。Marker から、行の下端の列 `j` へ曲がる線を描きます。                                                                                                                                                                                                                                                                |
+| `data-flow-cap="start" \| "end" \| "both"` | Item       | その Lane の線が Marker のところでどこから始まり、どこで終わるか。`start` は Marker から始まる (根の Lane の最初の Item、または Fork。Fork には必ず `start` が付きます)。`end` は Marker で終わる (Lane の最後の Item が最後の参照でもあり、Join しないとき)。`both` は 1 つの Item で Lane 全体が始まり、終わります。Join には `end` が付きません。曲がる線が下へ続くためです。 |
+
+```html
+<ol class="toki-timeline" data-flow="2">
+  <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="start">…</li>
+  <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-fork="1" data-flow-cap="start">…</li>
+  <li class="toki-item" data-lane="feature" data-flow-col="2" data-flow-through="1" data-flow-join="1">…</li>
+  <li class="toki-item" data-lane="main" data-flow-col="1" data-flow-cap="end">…</li>
+</ol>
+```
+
+### Lane の色
+
+`--toki-lane-gap` は Lane の列 1 本の幅 (既定 `3rem`) です。`--toki-lane-1-color` から `--toki-lane-4-color` で列ごとの色を決めます。指定しなければ、すべての Lane が `--toki-line-color` を使います。Marker の背景は `--toki-marker-bg`、自分の列の色、Marker の既定、の順に決まります。
+
+```css
+.toki-timeline {
+  --toki-lane-gap: 3rem;
+  --toki-lane-1-color: royalblue;
+  --toki-lane-2-color: seagreen;
+}
+```
+
+### 配置と向き
+
+Flow の Side は、Timeline に `data-side="start"` を指定しなければ `end` です。`alternate` は `end` として描くので、Flow が交互に並ぶことはありません。横向きの Timeline でも Flow を使えます。Lane の列は block 方向に並び、Timeline が Collapse しているあいだは縦の Flow として描かれます。Side も Lane の順も論理方向なので、右から左に書く言語でも成り立ちます。Card の中に入れ子にした Flow は、外の Item の値を継承せず、自分の属性から始まります。
 
 ## Reveal
 
@@ -225,33 +413,44 @@ Reveal は、Item がスクロールで画面に入るときに再生する登�
 <Timeline reveal>…</Timeline>
 ```
 
-Reveal は CSS のスクロール連動アニメーションで動きます。対応していないブラウザ (2026-10 時点の Firefox) と、「視差効果を減らす」設定のときは、アニメーションせず、すべての Item が普通に表示されます。
+Reveal は CSS のスクロール連動アニメーションで動きます。対応していないブラウザ (2026-10 時点の Firefox) と、「視差効果を減らす」設定のときは、アニメーションせず、すべての Item が普通に表示されます。横向きの Timeline では、Reveal は Timeline 自身の横スクロールに合わせて動きます。横向きの Timeline が Collapse して Item が縦に並んでいるあいだは、Reveal は動きません。Timeline がスクロールコンテナのままで、`view()` が追う先が無いためです。中身は動かない状態で見えています。
 
 ## Theming
 
 見た目の調整はすべて `--toki-*` の CSS 変数で行います。tokiline は各変数を `var(--toki-name, 既定値)` の形で読むので、祖先 (`:root` など)・Timeline・Item のどこで指定しても効きます。Item に指定した値は、その Item にだけ効きます。既定値は `currentColor` とシステムカラーの `Canvas` だけを使うので、ページの文字色と `color-scheme` に従います。
 
-| 変数                       | 意味                                      | 既定値                                                         |
-| -------------------------- | ----------------------------------------- | -------------------------------------------------------------- |
-| `--toki-accent`            | Marker の背景のもとになる色               | `currentColor`                                                 |
-| `--toki-gap`               | Item どうしの間隔                         | `2rem`                                                         |
-| `--toki-gutter`            | Line と Card の間隔                       | `1rem`                                                         |
-| `--toki-line-color`        | Line の色                                 | `color-mix(in oklab, currentColor 25%, transparent)`           |
-| `--toki-line-width`        | Line の太さ (`0` で消える)                | `2px`                                                          |
-| `--toki-line-style`        | Line の線種 (`solid`・`dashed`・`dotted`) | `solid`                                                        |
-| `--toki-marker-size`       | Marker の大きさ (`0` で消える)            | `2.5rem`                                                       |
-| `--toki-marker-bg`         | Marker の背景                             | `--toki-accent` の値                                           |
-| `--toki-marker-fg`         | Marker の中身の色                         | `Canvas`                                                       |
-| `--toki-marker-ring-width` | Marker のまわりの輪の太さ                 | `0.25rem`                                                      |
-| `--toki-marker-ring-color` | Marker のまわりの輪の色                   | `Canvas`                                                       |
-| `--toki-card-bg`           | Card の背景 (Arrow も同じ色になる)        | `color-mix(in oklab, currentColor 6%, Canvas)`                 |
-| `--toki-card-fg`           | Card の文字色                             | `currentColor`                                                 |
-| `--toki-card-border`       | Card の枠線                               | `1px solid color-mix(in oklab, currentColor 15%, transparent)` |
-| `--toki-card-radius`       | Card の角の丸み                           | `0.5rem`                                                       |
-| `--toki-card-padding`      | Card の内側の余白                         | `1rem`                                                         |
-| `--toki-card-shadow`       | Card の影                                 | `0 1px 2px color-mix(in oklab, currentColor 12%, transparent)` |
-| `--toki-arrow-size`        | Arrow の大きさ (`0` で消える)             | `0.5rem`                                                       |
-| `--toki-meta-fg`           | Meta の文字色                             | `color-mix(in oklab, currentColor 70%, transparent)`           |
+| 変数                           | 意味                                      | 既定値                                                         |
+| ------------------------------ | ----------------------------------------- | -------------------------------------------------------------- |
+| `--toki-accent`                | Marker の背景のもとになる色               | `currentColor`                                                 |
+| `--toki-gap`                   | Item どうしの間隔                         | `2rem`                                                         |
+| `--toki-compact-gap`           | `compact` の Item の後の間隔              | `1rem`                                                         |
+| `--toki-gutter`                | Line と Card の間隔                       | `1rem`                                                         |
+| `--toki-item-size`             | 横向きの Timeline の Item 1 つの幅        | `16rem`                                                        |
+| `--toki-lane-1-color`          | Flow の Lane の列 1 の色                  | `--toki-line-color`                                            |
+| `--toki-lane-2-color`          | Flow の Lane の列 2 の色                  | `--toki-line-color`                                            |
+| `--toki-lane-3-color`          | Flow の Lane の列 3 の色                  | `--toki-line-color`                                            |
+| `--toki-lane-4-color`          | Flow の Lane の列 4 の色                  | `--toki-line-color`                                            |
+| `--toki-lane-gap`              | Flow の Lane の列 1 本の幅                | `3rem`                                                         |
+| `--toki-line-color`            | Line の色                                 | `color-mix(in oklab, currentColor 25%, transparent)`           |
+| `--toki-line-width`            | Line の太さ (`0` で消える)                | `2px`                                                          |
+| `--toki-line-style`            | Line の線種 (`solid`・`dashed`・`dotted`) | `solid`                                                        |
+| `--toki-marker-size`           | Marker の大きさ (`0` で消える)            | `2.5rem`                                                       |
+| `--toki-compact-marker-size`   | `compact` の Item の Marker の大きさ      | `1rem`                                                         |
+| `--toki-milestone-marker-size` | `milestone` の Item の Marker の大きさ    | `3.5rem`                                                       |
+| `--toki-marker-bg`             | Marker の背景                             | `--toki-accent` の値                                           |
+| `--toki-marker-fg`             | Marker の中身の色                         | `Canvas`                                                       |
+| `--toki-marker-ring-width`     | Marker のまわりの輪の太さ                 | `0.25rem`                                                      |
+| `--toki-marker-ring-color`     | Marker のまわりの輪の色                   | `Canvas`                                                       |
+| `--toki-current-ring-color`    | `current` の Item の Marker に足す輪の色  | `var(--toki-accent, currentColor)`                             |
+| `--toki-card-bg`               | Card の背景 (Arrow も同じ色になる)        | `color-mix(in oklab, currentColor 6%, Canvas)`                 |
+| `--toki-card-fg`               | Card の文字色                             | `currentColor`                                                 |
+| `--toki-card-border`           | Card の枠線                               | `1px solid color-mix(in oklab, currentColor 15%, transparent)` |
+| `--toki-milestone-card-border` | `milestone` の Item の Card の枠線        | `2px solid var(--toki-accent, currentColor)`                   |
+| `--toki-card-radius`           | Card の角の丸み                           | `0.5rem`                                                       |
+| `--toki-card-padding`          | Card の内側の余白                         | `1rem`                                                         |
+| `--toki-card-shadow`           | Card の影                                 | `0 1px 2px color-mix(in oklab, currentColor 12%, transparent)` |
+| `--toki-arrow-size`            | Arrow の大きさ (`0` で消える)             | `0.5rem`                                                       |
+| `--toki-meta-fg`               | Meta の文字色                             | `color-mix(in oklab, currentColor 70%, transparent)`           |
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/theming-dark.png" />
@@ -313,7 +512,7 @@ shadcn/ui のテーマを使うときは、その変数を tokiline の変数に
 
 ## TypeScript helpers
 
-`tokiline` パッケージは、各部品の `class` と `data-*` の属性を返すヘルパを出しています。`timelineAttributes`・`itemAttributes`・`markerAttributes`・`cardAttributes`・`metaAttributes` です。Vue や Svelte などの部品を作るときに使います。
+`tokiline` パッケージは、各部品の `class` と `data-*` の属性を返すヘルパを出しています。`timelineAttributes`・`itemAttributes`・`markerAttributes`・`cardAttributes`・`metaAttributes` と、Flow の `flowAttributes` です。Vue や Svelte などの部品を作るときに使います。
 
 ```ts
 import { timelineAttributes } from "tokiline"
@@ -344,11 +543,11 @@ const props = defineProps<{ side?: TimelineSide }>()
 <ol {...timelineAttributes({ side: "end" })}><slot /></ol>
 ```
 
-型の `Side`・`TimelineSide`・`Collapse`・`Reveal`・`TimelineOptions`・`ItemOptions`・`PartAttributes` も出しています。
+型の `Side`・`TimelineSide`・`Collapse`・`Reveal`・`Orientation`・`Variant`・`Status`・`Preset`・`TimelineOptions`・`ItemOptions`・`PartAttributes`・`FlowItem`・`FlowColumn`・`FlowCap`・`FlowLayout`・`FlowTimelineAttributes`・`FlowItemAttributes` も出しています。`FlowError` は `flowAttributes()` が投げるエラーです。
 
 ## Browser support
 
-tokiline は、Baseline の「広く利用可能」な CSS の機能だけを使います。例外は Reveal だけです。スクロール連動アニメーションを、あれば使うおまけとして使い、これが無くても内容と配置は崩れません。
+tokiline は、Baseline の「広く利用可能」な CSS の機能だけを使います。例外は 2 つで、どちらもあれば使うおまけとして扱います。Reveal と Preset の一部はスクロール連動アニメーションを使い、`kinen` は Card を回る光のために `@property` を使います。対応していなくても、Reveal は動かず、Preset は止まった見た目のままで、内容と配置は崩れません。
 
 Timeline はコンテナ (`container-type: inline-size`) なので、横幅を中身から決められません。横幅が中身から決まる場所 (幅の指定の無い flex の子など) では、Timeline に幅を指定してください。
 
@@ -357,6 +556,7 @@ Timeline はコンテナ (`container-type: inline-size`) なので、横幅を�
 - Timeline には `ol`、Item には `li` を使います。
 - 日付は `<time>` に入れます。
 - Marker は、自動では読み上げから外れません。飾りだけのアイコンには `aria-hidden="true"` を付けてください。
+- Status は見た目だけで伝わります。tokiline は読み上げの文言を足さないので、Card か Meta に言葉を書いてください。
 - 利用者にクリックさせたい所には、`button` か `a` を置きます。Marker や Card そのものをクリックできるようにはしません。
 
 ## Migrating from react-vertical-timeline-component

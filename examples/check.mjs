@@ -3,7 +3,8 @@
 // Install and build the example first (`pnpm --dir examples/<example> install --ignore-workspace` and `... build`).
 //
 // The server listens on a free port of 127.0.0.1. Once it answers, this script checks that:
-//   1. the HTML of / (App Router) and /pages-router (Pages Router) has class="toki-timeline" and class="toki-item"
+//   1. the HTML of / (App Router) and /pages-router (Pages Router) has class="toki-timeline", class="toki-item",
+//      data-orientation="horizontal", data-preset="hotaru" and data-flow-col
 //   2. one of the stylesheets each page links with <link rel="stylesheet"> contains toki-timeline
 //   3. the RSC payload of / (requested with the RSC: 1 header) contains toki-timeline. The payload carries the elements
 //      a Server Component renders, but only a reference for a Client Component, so this shows the Timeline is a Server Component.
@@ -134,7 +135,7 @@ function findStylesheets(html, pageUrl) {
 async function checkPage(baseUrl, path) {
   const pageUrl = new URL(path, baseUrl)
   const { text: html } = await get(pageUrl)
-  const problems = ['class="toki-timeline"', 'class="toki-item"']
+  const problems = ['class="toki-timeline"', 'class="toki-item"', 'data-orientation="horizontal"', 'data-preset="hotaru"', "data-flow-col"]
     .filter((attribute) => !html.includes(attribute))
     .map((attribute) => `${path}: the HTML has no ${attribute}`)
 

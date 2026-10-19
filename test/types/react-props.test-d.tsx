@@ -4,7 +4,9 @@ import type { TimelineCardProps, TimelineItemProps, TimelineMarkerProps, Timelin
 
 // Checked by tsc only; this file is not a runtime test.
 ;<Timeline side="alternate" collapse="lg" reveal />
+;<Timeline orientation="horizontal" preset="hotaru" />
 ;<TimelineItem side="end" />
+;<TimelineItem variant="milestone" status="current" />
 ;<Timeline style={{ "--toki-line-color": "red" }} />
 ;<Timeline style={{ "--toki-line-width": 2, "--toki-gap": undefined, color: "red" }} />
 ;<Timeline ref={createRef<HTMLOListElement>()} />
@@ -27,6 +29,12 @@ const metaProps: TimelineMetaProps = { "aria-label": "Date", ref: createRef<HTML
 ;<TimelineItem side="alternate" />
 // @ts-expect-error -- xl is not a supported Collapse threshold.
 ;<Timeline collapse="xl" />
+// @ts-expect-error -- Orientation is vertical or horizontal.
+;<Timeline orientation="diagonal" />
+// @ts-expect-error -- Variant is compact or milestone.
+;<TimelineItem variant="large" />
+// @ts-expect-error -- Status is done, current, or upcoming.
+;<TimelineItem status="pending" />
 // @ts-expect-error -- Custom properties outside the toki prefix are not added.
 ;<Timeline style={{ "--other": "x" }} />
 // @ts-expect-error -- Timeline renders an ol, so a div ref is incompatible.

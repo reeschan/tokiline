@@ -32,6 +32,7 @@
       "default": "./dist/react/index.js"
     },
     "./style.css": "./dist/style.css",
+    "./presets/*.css": "./dist/presets/*.css",
     "./package.json": "./package.json"
   },
   "files": [
