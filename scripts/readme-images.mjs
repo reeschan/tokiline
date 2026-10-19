@@ -1,7 +1,8 @@
-// Takes the six images of the README (docs/images/*.png) from the demo site: build, start the Vite preview, shoot, stop.
+// Takes the images of the README (docs/images/*.png) from the demo site: build, start the Vite preview, shoot, stop.
 // Usage: pnpm readme:images
-// The images are the Timeline in the light and dark color schemes: hero and theming (the /showcase/ page, the parts with
-// data-shot) and tailwind (the main of /acceptance/portfolio.html). Every run replaces the six files.
+// The images are the Timeline in the light and dark color schemes: hero, theming, hero-horizontal, orientation,
+// flow-horizontal, flow and presets (the /showcase/ page, the parts with data-shot) and tailwind (the main of
+// /acceptance/portfolio.html). Every run replaces all of the files.
 // The preview and the browser are stopped on success and on failure. On failure this script prints the reason and exits with 1.
 import { spawn, spawnSync } from "node:child_process"
 import { mkdirSync, readFileSync, statSync } from "node:fs"
@@ -23,6 +24,11 @@ const requestTimeout = 30_000
 const shots = [
   { name: "hero", path: "/showcase/", selector: '[data-shot="hero"]' },
   { name: "theming", path: "/showcase/", selector: '[data-shot="theming"]' },
+  { name: "hero-horizontal", path: "/showcase/", selector: '[data-shot="hero-horizontal"]' },
+  { name: "orientation", path: "/showcase/", selector: '[data-shot="orientation"]' },
+  { name: "flow-horizontal", path: "/showcase/", selector: '[data-shot="flow-horizontal"]' },
+  { name: "flow", path: "/showcase/", selector: '[data-shot="flow"]' },
+  { name: "presets", path: "/showcase/", selector: '[data-shot="presets"]' },
   { name: "tailwind", path: "/acceptance/portfolio.html", selector: "main", darkClass: true },
 ]
 const colorSchemes = ["light", "dark"]
@@ -121,7 +127,7 @@ async function shoot(context, { name, path, selector, darkClass }, colorScheme) 
   }
 }
 
-// Shoots all six images with Chromium and prints the name and size of each file.
+// Shoots all the images with Chromium and prints the name and size of each file.
 async function shootAll() {
   mkdirSync(outDir, { recursive: true })
   const browser = await chromium.launch()

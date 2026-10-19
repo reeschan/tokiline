@@ -9,6 +9,13 @@
   </picture>
 </p>
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/hero-horizontal-dark.png" />
+    <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/hero-horizontal-light.png" alt="同じ 4 つの Item を横向きにしたタイムライン。Line が横に走り、Card は Marker の下にある。最初の 2 つは done、Public beta は current で Marker が大きく、Version 1.0 は upcoming の milestone で Line が破線、Card に枠がある。" width="944" />
+  </picture>
+</p>
+
 [English](README.md) | 日本語
 
 ## Features
@@ -219,6 +226,11 @@ Alternate の Timeline が狭くて両側を使えないとき、すべての Ca
 
 Orientation は、Line が走る向きです。既定は縦です。
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/orientation-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/orientation-light.png" alt="Alternate の並びの横向きのタイムライン。5 つの Item の Card が Line の上と下に交互に並び、日付は Card と反対の側にある。" width="944" />
+</picture>
+
 | 値           | HTML                                           | React                                     |
 | ------------ | ---------------------------------------------- | ----------------------------------------- |
 | `vertical`   | 指定なし、または `data-orientation="vertical"` | 指定なし、または `orientation="vertical"` |
@@ -279,6 +291,11 @@ Status は見た目だけで伝わります。tokiline は読み上げの文言�
 
 Preset は、名前で選ぶ見た目のことです。Preset ごとに別の CSS ファイルとして配るので、使うものだけを読み込みます。
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/presets-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/presets-light.png" alt="同じ 3 つの Item を 3 つの Preset で並べたもの。黄色に光る hotaru、done が青緑の実線で upcoming が破線の kawa、金色で current の Card に枠がある kinen。" width="944" />
+</picture>
+
 ```js
 import "tokiline/style.css"
 import "tokiline/presets/hotaru.css"
@@ -311,6 +328,16 @@ Preset は縦・横・Flow のどれでも使えます。Flow と一緒に使う
 ## Flow
 
 Flow は、Item が複数の Lane に分かれて走る Timeline です。並びは 1 本のリストのままで、各 Item はちょうど 1 つの Lane に乗り、Lane は Fork (分かれる) と Join (合わさる) をします。`flowAttributes()` が、`lane`・`fork`・`join` の名前から列の番号と各行の線を計算します。
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-horizontal-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-horizontal-light.png" alt="横向きの Flow。青い main の Lane が上を横に走り、緑の feature の Lane が 2 月に下へ Fork して 4 月に Join し、main の Lane は Launch で終わる。" width="944" />
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-light.png" alt="青・緑・橙の 3 本の Lane がある縦の Flow。web と mobile の Lane が main の Lane から Fork し、順に Join して、main の Lane は Launch で終わる。" width="688" />
+</picture>
 
 ```ts
 import { flowAttributes } from "tokiline"

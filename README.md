@@ -9,6 +9,13 @@ A framework-agnostic timeline UI: plain CSS and HTML first, with an optional Rea
   </picture>
 </p>
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/hero-horizontal-dark.png" />
+    <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/hero-horizontal-light.png" alt="The same four Items in a horizontal timeline: the Line runs across, each Card sits below its Marker, the first two Items are done, Public beta is current with a larger Marker, and Version 1.0 is an upcoming milestone with a dashed Line and an outlined Card." width="944" />
+  </picture>
+</p>
+
 English | [日本語](README.ja.md)
 
 ## Features
@@ -219,6 +226,11 @@ For the Alternate layout, `collapse` decides when every Card moves to the `end` 
 
 Orientation is the direction in which the Line runs. It is vertical by default.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/orientation-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/orientation-light.png" alt="A horizontal timeline in the Alternate layout: five Items whose Cards sit above and below the Line in turn, each with its date on the other side." width="944" />
+</picture>
+
 | Value        | HTML                                   | React                             |
 | ------------ | -------------------------------------- | --------------------------------- |
 | `vertical`   | none, or `data-orientation="vertical"` | none, or `orientation="vertical"` |
@@ -279,6 +291,11 @@ Status is visual only. tokiline does not add a spoken label for it, so write the
 
 A Preset is a named, opt-in look. Each Preset ships as its own stylesheet, so you load only the one you use.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/presets-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/presets-light.png" alt="The same three Items in the three Presets side by side: hotaru with a yellow glow, kawa with a solid teal line for done and a dashed one for upcoming, and kinen in gold with an outlined current Card." width="944" />
+</picture>
+
 ```js
 import "tokiline/style.css"
 import "tokiline/presets/hotaru.css"
@@ -311,6 +328,16 @@ Presets work in the vertical and horizontal Orientations and in a Flow; with a F
 ## Flow
 
 A Flow is a Timeline whose Items run on more than one Lane. It is still one ordered list: every Item sits on exactly one Lane, and Lanes can Fork and Join. `flowAttributes()` works out the Lane columns and what each row draws from the `lane`, `fork`, and `join` names.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-horizontal-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-horizontal-light.png" alt="A horizontal Flow: a blue main Lane runs across the top, a green feature Lane Forks below it in February and Joins back in April, and the main Lane ends at Launch." width="944" />
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-dark.png" />
+  <img src="https://raw.githubusercontent.com/reeschan/tokiline/main/docs/images/flow-light.png" alt="A vertical Flow with three Lanes in blue, green, and orange: the web and mobile Lanes Fork from the main Lane, Join it again one after the other, and the main Lane ends at Launch." width="688" />
+</picture>
 
 ```ts
 import { flowAttributes } from "tokiline"
