@@ -1,5 +1,15 @@
 # tokiline
 
+## 0.2.0
+
+### Minor Changes
+
+- cb52608: Add a horizontal Orientation, Variant and Status, three Presets (`hotaru`, `kawa`, and `kinen`), and Flow: Lanes that Fork and Join, with the attributes computed by `flowAttributes()` at build time and no runtime JavaScript.
+
+### Patch Changes
+
+- 2d1a164: Show the 0.2 features in the README: a horizontal hero next to the vertical one, and pictures of the horizontal Orientation, the Presets, and a horizontal and a vertical Flow.
+
 ## 0.1.0
 
 ### Minor Changes
